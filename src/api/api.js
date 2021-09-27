@@ -7,6 +7,7 @@ let instance = axios.create({
 instance.interceptors.request.use((request) => {
   request.headers.common['Accept'] = 'application/json'
   request.headers.common['Content-type'] = 'application/json'
+  //request.headers.common['Access-Control-Allow-Origin'] = '*'
   return request
 })
 
@@ -16,7 +17,8 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      sessionStorage.removeItem('user')
+      //sessionStorage.removeItem('user')
+      localStorage.removeItem('user')
       window.location.reload()
     }
     return Promise.reject(error)

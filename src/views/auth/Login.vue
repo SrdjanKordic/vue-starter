@@ -14,11 +14,13 @@
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" placeholder="Your email" v-model="user.email" required /><br />
               <label for="password" class="form-label">Password</label>
-              <input type="text" class="form-control" placeholder="Your password" v-model="user.password" required /><br />
+              <input type="password" class="form-control" placeholder="Your password" v-model="user.password" required /><br />
               <button class="btn btn-primary w-100">Login</button>
             </form>
           </div>
         </div>
+
+        <button class="btn btn-secondary" @click="githubLogin()">github</button>
       </div>
     </div>
   </div>
@@ -42,6 +44,19 @@ export default {
 
       try {
         await this.$store.dispatch('login', this.user)
+        await this.$router.push('/')
+      } catch (error) {
+        this.error = error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async githubLogin() {
+      this.error = null
+
+      try {
+        await this.$store.dispatch('loginGithub', this.user)
         await this.$router.push('/')
       } catch (error) {
         this.error = error

@@ -1,19 +1,24 @@
 import api from './api'
+import config from '../../config'
 
 export default {
-    createSession() {
-        return api.get('http://127.0.0.1:8000/sanctum/csrf-cookie')
-    },
+  createSession() {
+    return api.get(`${config.apiUrl}/sanctum/csrf-cookie`)
+  },
 
-    login(params) {
-        return api.post('http://127.0.0.1:8000/api/login', params)
-    },
+  login(params) {
+    return api.post(`${config.apiUrl}/api/login`, params)
+  },
 
-    logout() {
-        return api.delete('http://127.0.0.1:8000/api/logout')
-    },
+  loginGithub() {
+    return api.get(`${config.apiUrl}/api/login/github`)
+  },
 
-    getPosts() {
-        return api.get('http://127.0.0.1:8000/api/posts')
-    }
+  logout() {
+    return api.delete(`${config.apiUrl}/api/logout`)
+  },
+
+  getPosts() {
+    return api.get(`${config.apiUrl}/api/posts`)
+  },
 }
