@@ -1,28 +1,47 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="col-5 col-md-4 col-lg-3 col-xl-2 my-sm-3 col-sidebar">
+          <Sidebar />
+        </aside>
+        <div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xl-10 col-content" id="content">
+          <Header />
+          <div class="main-container">
+            <router-view></router-view>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from "./components/layout/Header";
+import Sidebar from "./components/layout/Sidebar.vue";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: { Header, Sidebar },
+};
 </script>
 
-<style>
+<style lang="scss">
+@import "../src/assets/sass/design";
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  background-color: #f8f8f8;
+}
+.col-content {
+  min-height: 100vh;
+}
+
+@media (max-width: 575.98px) {
+  .col-sidebar {
+    width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
 </style>
