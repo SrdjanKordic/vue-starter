@@ -22,11 +22,11 @@
         <li class="mb-2">
           <router-link class="btn text-start px-3" to="/ui-kit"> <font-awesome-icon :icon="['fas', 'box']" class="me-1" /> UI Kit </router-link>
         </li>
-        <li class="mb-2"><div class="text-warning">Settings</div></li>
-        <li class="mb-2">
+        <li class="mb-2" v-if="authenticated"><div class="text-warning">Settings</div></li>
+        <li class="mb-2" v-if="authenticated">
           <router-link class="btn text-start px-3" to="/users"> <font-awesome-icon :icon="['fas', 'users']" class="me-1" /> Users </router-link>
         </li>
-        <li class="mb-2">
+        <li class="mb-2" v-if="authenticated">
           <router-link class="btn text-start px-3" to="/settings"> <font-awesome-icon :icon="['fas', 'cogs']" class="me-1" /> Settings </router-link>
         </li>
       </ul>
@@ -35,11 +35,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'Sidebar',
   computed: {
     ...mapState(['menuOpen', 'user']),
+    ...mapGetters({ authenticated: 'authenticated' }),
   },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper">
     <div class="page-header ms-1">
-      <h4 class="m-0">Welcome back 🥳 {{ user.name }}</h4>
+      <h4 class="m-0">🥳 Welcome back {{ user.name }}</h4>
       <small class="text-secondary">This is a small page with great posibilities edited</small>
     </div>
 
