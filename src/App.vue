@@ -17,16 +17,18 @@
 </template>
 
 <script>
-import Header from "./components/layout/Header";
-import Sidebar from "./components/layout/Sidebar.vue";
+import Header from './components/layout/Header'
+import Sidebar from './components/layout/Sidebar.vue'
 export default {
-  name: "App",
+  name: 'App',
   components: { Header, Sidebar },
-};
+}
 </script>
 
 <style lang="scss">
-@import "../src/assets/sass/design";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;800&display=swap');
+@import '../src/assets/sass/design';
 
 #app {
   display: flex;

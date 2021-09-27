@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper">
     <div class="page-header ms-1">
-      <h4 class="m-0">Home</h4>
+      <h4 class="m-0">Welcome back 🥳 {{ user.name }}</h4>
       <small class="text-secondary">This is a small page with great posibilities edited</small>
     </div>
 
@@ -17,32 +17,32 @@
 </template>
 
 <script>
-import StatsPieChart from "../components/charts/StatsPieChart";
-import { mapGetters, mapState } from "vuex";
+import StatsPieChart from '../components/charts/StatsPieChart'
+import { mapGetters, mapState } from 'vuex'
 export default {
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       statsChartPie: {
-        labels: ["Today", "Yesterday"],
+        labels: ['Today', 'Yesterday'],
         datasets: [
           {
-            label: "Visitors",
-            backgroundColor: ["#f87979", "ff2123"],
+            label: 'Visitors',
+            backgroundColor: ['#f87979', 'ff2123'],
             data: [356, 568],
           },
         ],
       },
-    };
+    }
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(['user']),
     ...mapGetters({
-      authenticated: "authenticated",
+      authenticated: 'authenticated',
     }),
   },
   components: {
     StatsPieChart,
   },
-};
+}
 </script>

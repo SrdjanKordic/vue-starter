@@ -6,10 +6,10 @@
       </a>
       <input type="text" class="form-control w-75" placeholder="🔍  Search..." />
 
-      <div class="dropdown w-auto">
+      <div v-if="authenticated" class="dropdown w-auto">
         <div role="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="https://picsum.photos/64/64" width="32" height="32" class="rounded-circle shadow" />
-          <span class="d-none d-sm-inline-block">Srdjan Kordic</span>
+          <span class="d-none d-sm-inline-block ms-2 me-2">{{ user.name }}</span>
         </div>
 
         <ul class="dropdown-menu" aria-labelledby="profile">
@@ -17,12 +17,22 @@
           <li><a class="dropdown-item" href="#">Log out</a></li>
         </ul>
       </div>
+      <div v-else>
+        <a class="btn btn-link" href="/login">Login</a>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 export default {
-  name: "Header",
-};
+  name: 'Header',
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters({
+      authenticated: 'authenticated',
+    }),
+  },
+}
 </script>

@@ -1,16 +1,31 @@
 <template>
   <div>
-    <h3>Login</h3>
-    <p v-if="loading">Loading</p>
-    <p v-if="error">{{ error }}</p>
-    <input type="email" placeholder="email" v-model="user.email" /><br />
-    <input type="text" placeholder="password" v-model="user.password" /><br />
-    <button @click="login">Login</button>
+    <div class="row justify-content-center my-5">
+      <div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+        <h3 class="mb-3 text-center">👋 Login to system</h3>
+        <p class="mb-3 text-center">Logged users have some privilages 🤷‍♂️</p>
+        <p v-if="loading">Loading</p>
+        <div v-if="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <form @submit.prevent="login">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" placeholder="Your email" v-model="user.email" required /><br />
+              <label for="password" class="form-label">Password</label>
+              <input type="text" class="form-control" placeholder="Your password" v-model="user.password" required /><br />
+              <button class="btn btn-primary w-100">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       user: {
@@ -19,21 +34,21 @@ export default {
       },
       loading: false,
       error: null,
-    };
+    }
   },
   methods: {
     async login() {
-      this.error = null;
+      this.error = null
 
       try {
-        await this.$store.dispatch("login", this.user);
-        await this.$router.push("/");
+        await this.$store.dispatch('login', this.user)
+        await this.$router.push('/')
       } catch (error) {
-        this.error = error;
+        this.error = error
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
   },
-};
+}
 </script>

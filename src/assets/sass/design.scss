@@ -1,11 +1,26 @@
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Nunito");
+// Bootstrap Configuration
+@import '~bootstrap/scss/functions';
 
 // Variables
-@import "variables";
-
+@import 'variables';
+@import '~bootstrap/scss/variables';
 // Bootstrap
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
+
+@import '~bootstrap/scss/buttons';
+
+@import 'card';
+@import 'buttons';
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto';
+  font-weight: 700;
+}
 
 .btn {
   -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background 0s, border 0s;

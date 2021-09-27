@@ -35,13 +35,13 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-  name: "Sidebar",
+  name: 'Sidebar',
   computed: {
-    ...mapState(["menuOpen"]),
+    ...mapState(['menuOpen', 'user']),
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -92,7 +92,7 @@ export default {
 }
 @media (max-width: 575.98px) {
   .sidebar-overlay {
-    content: "";
+    content: '';
     position: fixed;
     z-index: 115;
     transition: background-color 0.2s ease-out;

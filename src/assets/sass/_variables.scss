@@ -2,7 +2,7 @@
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: "Nunito", sans-serif;
+$font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -26,9 +26,23 @@ $success: #2a9836;
 $danger: #de222e;
 $warning: #fbb21d;
 
+$success-light: #8dd384;
+$success-lighter: #e4f7e6;
+$info-light: #b9c4ff;
+$info-lighter: #ecf2ff;
+$warning-light: tint-color($yellow, 40%);
+$warning-lighter: #fff7e1;
+$danger-light: #f9c7c7;
+$danger-lighter: #ffe6e6;
+
 $btn-box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
 
 $border-radius: 0.875rem;
 $border-radius-sm: 0.25rem;
 $border-radius-lg: 0.5rem;
 $border-radius-pill: 50rem;
+
+$font-family-sans-serif: 'Montserrat';
+
+$form-label-font-size: 1rem;
+$form-label-font-weight: 600;
