@@ -8,7 +8,7 @@
       <button v-if="authenticated" class="btn btn-secondary" @click="logout()">Logout</button>
       <div v-if="authenticated" class="dropdown w-auto">
         <div role="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://picsum.photos/64/64" width="32" height="32" class="rounded-circle shadow" />
+          <img :src="user.avatar ? user.avatar : 'https://picsum.photos/64/64'" width="32" height="32" class="rounded-circle shadow" />
           <span class="d-none d-sm-inline-block ms-2 me-2">{{ user.name }}</span>
         </div>
 
@@ -25,33 +25,33 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters } from "vuex";
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
     return {
       loading: false,
       error: null,
-    }
+    };
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState(["user"]),
     ...mapGetters({
-      authenticated: 'authenticated',
+      authenticated: "authenticated",
     }),
   },
   methods: {
     async logout() {
-      this.loading = true
+      this.loading = true;
       try {
-        await this.$store.dispatch('logout')
-        await this.$router.push({ name: 'login' })
+        await this.$store.dispatch("logout");
+        await this.$router.push({ name: "login" });
       } catch (error) {
-        this.error = error
+        this.error = error;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
   },
-}
+};
 </script>
