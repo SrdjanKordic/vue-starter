@@ -1,32 +1,31 @@
-import api from "./api";
-import config from "../../config";
+import api from './api'
 
 export default {
   createSession() {
-    return api.get(`${config.apiUrl}/sanctum/csrf-cookie`);
+    return api.get(`/sanctum/csrf-cookie`)
   },
 
   login(params) {
-    return api.post(`${config.apiUrl}/api/login`, params);
+    return api.post(`/api/login`, params)
   },
 
   oauthUrlGithub() {
-    return api.get(`${config.apiUrl}/api/login/github`);
+    return api.get(`/api/login/github`)
   },
 
   oauthUrlGoogle() {
-    return api.get(`${config.apiUrl}/api/login/google`);
+    return api.get(`/api/login/google`)
   },
 
   oauthUrlFacebook() {
-    return api.get(`${config.apiUrl}/api/login/facebook`);
+    return api.get(`/api/login/facebook`)
   },
 
   logout() {
-    return api.delete(`${config.apiUrl}/api/logout`);
+    return api.delete(`/api/logout`)
   },
 
   getPosts() {
-    return api.get(`${config.apiUrl}/api/posts`);
+    return api.get(`/api/posts`)
   },
-};
+}
