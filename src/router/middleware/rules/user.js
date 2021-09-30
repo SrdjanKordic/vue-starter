@@ -1,9 +1,9 @@
-import store from '../../../store'
+import store from "../../../store";
 
 export default (to, from, next) => {
-  if (store.getters['authenticated']) {
-    next()
+  if (store.getters["isAuth"]) {
+    next();
   } else {
-    next({ name: 'login' })
+    next({ name: "login" });
   }
-}
+};

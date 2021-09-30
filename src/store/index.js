@@ -1,62 +1,84 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import repository from "../api/repository";
+import restApi from "../api/index";
+import { decode } from "jsonwebtoken";
+import router from "../router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    token: localStorage.getItem("auth-token") || null,
+    authUser: decode(localStorage.getItem("auth-token")) || null,
     menuOpen: false,
-    user: localStorage.user ? JSON.parse(localStorage.getItem("user")) : null,
   },
   getters: {
-    user: (state) => state.user,
-    authenticated: (state) => state.user != null,
+    isAuth(state) {
+      if (state.token) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   mutations: {
-    SET_USER(state, user) {
-      state.user = user;
+    SET_TOKEN(state, token) {
+      localStorage.setItem("auth-token", token);
+      state.token = token;
     },
 
-    toggleMenu(state, open) {
+    SET_AUTH(state, token) {
+      localStorage.setItem("auth-token", token);
+      state.token = token;
+      state.authUser = decode(state.token);
+    },
+
+    UNSET_AUTH(state) {
+      state.token = null;
+      state.authUser = null;
+    },
+
+    TOGGLE_MENU(state, open) {
       if (open === undefined) {
         open = !state.menuOpen;
       }
-
       state.menuOpen = open;
     },
   },
   actions: {
-    async login({ commit }, user) {
-      await repository.createSession();
-      const { data } = await repository.login(user);
-      commit("SET_USER", data);
-
-      //sessionStorage.user = JSON.stringify(data)
-      localStorage.user = JSON.stringify(data);
+    authLogin: ({ commit }, user) => {
+      return new Promise((resolve, reject) => {
+        restApi
+          .post("login", user)
+          .then((resp) => {
+            // This is a successful authentication
+            commit("SET_AUTH", resp.data.token);
+            resolve(resp);
+          })
+          .catch((err) => {
+            localStorage.removeItem("auth-token");
+            reject(err);
+          });
+      });
     },
 
-    async logout({ commit }) {
-      await repository.logout();
-      commit("SET_USER", null);
-      //sessionStorage.removeItem('user')
-      localStorage.removeItem("user");
-    },
-
-    async fetchOauthUrlGithub() {
-      const { data } = await repository.oauthUrlGithub();
-      return data;
-    },
-
-    async fetchOauthUrlGoogle() {
-      const { data } = await repository.oauthUrlGoogle();
-      return data;
-    },
-
-    async fetchOauthUrlFacebook() {
-      const { data } = await repository.oauthUrlFacebook();
-      console.log(data);
-      return data;
+    authLogout: ({ commit }, token) => {
+      return new Promise((resolve, reject) => {
+        restApi
+          .post("logout", token)
+          .then(() => {
+            // This is a successful logout
+            console.log("ovde" + token);
+            commit("UNSET_AUTH");
+            localStorage.removeItem("auth-token");
+            resolve();
+            router.push("/login");
+            window.location.reload();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
     },
   },
 });

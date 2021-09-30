@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper">
     <div class="page-header ms-1">
-      <h4 class="m-0">🥳 Welcome back {{ user.name }}</h4>
+      <h4 class="m-0">🥳 Welcome back {{ authUser.name }}</h4>
       <small class="text-secondary">This is a small page with great posibilities edited</small>
     </div>
 
@@ -10,6 +10,17 @@
         <div class="col-12 col-lg-3 text-center rounded shadow-sm bg-white p-2">
           Visitors
           <stats-pie-chart :data="statsChartPie" :height="300" class="mb-4"></stats-pie-chart>
+
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -17,32 +28,30 @@
 </template>
 
 <script>
-import StatsPieChart from '../components/charts/StatsPieChart'
-import { mapGetters, mapState } from 'vuex'
+import StatsPieChart from "../components/charts/StatsPieChart";
+import { mapGetters, mapState } from "vuex";
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       statsChartPie: {
-        labels: ['Today', 'Yesterday'],
+        labels: ["Today", "Yesterday"],
         datasets: [
           {
-            label: 'Visitors',
-            backgroundColor: ['#f87979', 'ff2123'],
+            label: "Visitors",
+            backgroundColor: ["#f87979", "ff2123"],
             data: [356, 568],
           },
         ],
       },
-    }
+    };
   },
   computed: {
-    ...mapState(['user']),
-    ...mapGetters({
-      authenticated: 'authenticated',
-    }),
+    ...mapState(["authUser"]),
+    ...mapGetters(["isAuth"]),
   },
   components: {
     StatsPieChart,
   },
-}
+};
 </script>

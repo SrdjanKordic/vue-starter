@@ -12,7 +12,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <table class="table table-hover">
+            <table v-if="!loading" class="table table-hover">
               <thead>
                 <tr class="rounded">
                   <th>id</th>
@@ -34,6 +34,11 @@
                 </template>
               </tbody>
             </table>
+            <div v-else class="loading-full">
+              <div class="spinner-grow" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -42,30 +47,32 @@
 </template>
 
 <script>
-import api from '../api/api'
+import restApi from "../api/index.js";
 export default {
-  name: 'SecondPage',
+  name: "SecondPage",
   data() {
     return {
-      name: 'Srdjan Kordic',
+      name: "Srdjan Kordic",
       users: [],
-    }
+      loading: false,
+    };
   },
   created() {
-    this.getUsers()
+    this.getUsers();
   },
   methods: {
     getUsers() {
-      api.get(`/api/users`).then(
+      this.loading = true;
+      restApi.get(`/users`).then(
         ({ data }) => {
-          console.log(data)
-          this.users = data
+          this.users = data;
+          this.loading = false;
         },
         (error) => {
-          console.log(error)
+          console.log(error);
         }
-      )
+      );
     },
   },
-}
+};
 </script>

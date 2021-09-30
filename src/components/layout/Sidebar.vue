@@ -1,12 +1,12 @@
 <template>
   <div class="app-sidebar bg-white rounded-2 p-sm-3">
-    <div class="sidebar-overlay" :class="{ 'sidebar-open': menuOpen }" @click="$store.commit('toggleMenu', false)"></div>
+    <div class="sidebar-overlay" :class="{ 'sidebar-open': menuOpen }" @click="$store.commit('TOGGLE_MENU', false)"></div>
     <nav
       aria-label="HeyGov navigation"
       :class="{
         'sidebar-open': menuOpen,
       }"
-      @click="$store.commit('toggleMenu')"
+      @click="$store.commit('TOGGLE_MENU')"
     >
       <div class="logo mb-3">
         <img src="https://picsum.photos/160/80" alt="" class="w-100 rounded" />
@@ -22,11 +22,11 @@
         <li class="mb-2">
           <router-link class="btn text-start px-3" to="/ui-kit"> <font-awesome-icon :icon="['fas', 'box']" class="me-1" /> UI Kit </router-link>
         </li>
-        <li class="mb-2" v-if="authenticated"><div class="text-warning">Settings</div></li>
-        <li class="mb-2" v-if="authenticated">
+        <li class="mb-2" v-if="isAuth"><div class="text-warning">Settings</div></li>
+        <li class="mb-2" v-if="isAuth">
           <router-link class="btn text-start px-3" to="/users"> <font-awesome-icon :icon="['fas', 'users']" class="me-1" /> Users </router-link>
         </li>
-        <li class="mb-2" v-if="authenticated">
+        <li class="mb-2" v-if="isAuth">
           <router-link class="btn text-start px-3" to="/settings"> <font-awesome-icon :icon="['fas', 'cogs']" class="me-1" /> Settings </router-link>
         </li>
       </ul>
@@ -35,14 +35,14 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters } from "vuex";
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   computed: {
-    ...mapState(['menuOpen', 'user']),
-    ...mapGetters({ authenticated: 'authenticated' }),
+    ...mapState(["menuOpen", "token"]),
+    ...mapGetters(["isAuth"]),
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -93,7 +93,7 @@ export default {
 }
 @media (max-width: 575.98px) {
   .sidebar-overlay {
-    content: '';
+    content: "";
     position: fixed;
     z-index: 115;
     transition: background-color 0.2s ease-out;
