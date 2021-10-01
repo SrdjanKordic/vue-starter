@@ -26,6 +26,16 @@ $success: #2a9836;
 $danger: #de222e;
 $warning: #fbb21d;
 
+$primary: #7367f0;
+$success: #28c76f;
+$danger: #ea5455;
+$warning: #ff9f43;
+$dark: #1e1e1e;
+$grey: #b8c2cc;
+$grey-light: #dae1e7;
+$white: #fff;
+$black: #22292f;
+
 $success-light: #8dd384;
 $success-lighter: #e4f7e6;
 $info-light: #b9c4ff;
@@ -37,12 +47,18 @@ $danger-lighter: #ffe6e6;
 
 $btn-box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
 
-$border-radius: 0.875rem;
+$border-radius: 0.5rem;
 $border-radius-sm: 0.25rem;
-$border-radius-lg: 0.5rem;
+$border-radius-lg: 0.875rem;
 $border-radius-pill: 50rem;
 
 $font-family-sans-serif: 'Montserrat';
 
 $form-label-font-size: 1rem;
 $form-label-font-weight: 600;
+
+// Badges
+$badge-font-size: 0.75rem;
+$badge-font-weight: 600;
+$badge-padding-y: 0.5em;
+$badge-padding-x: 1em;
