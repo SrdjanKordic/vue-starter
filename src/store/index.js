@@ -67,6 +67,20 @@ export default new Vuex.Store({
 			})
 		},
 
+		authLoginSocialite: (user, provider) => {
+			return new Promise((resolve, reject) => {
+				restApi
+					.get('login/' + provider, user)
+					.then(resp => {
+						console.log(resp.data)
+						resolve(resp.data)
+					})
+					.catch(error => {
+						reject(error)
+					})
+			})
+		},
+
 		authLogout: ({ commit }, token) => {
 			return new Promise((resolve, reject) => {
 				restApi

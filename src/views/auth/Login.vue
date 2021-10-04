@@ -32,6 +32,11 @@
 								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 								Logging in...
 							</button>
+							<div class="text-center mt-2">
+								<router-link class="text-decoration-none" to="/forgot-password">
+									Forgot password?
+								</router-link>
+							</div>
 						</form>
 					</div>
 				</div>
@@ -88,10 +93,9 @@ export default {
 			}
 
 			if (e.origin === 'http://127.0.0.1:8000') {
-				this.$store.commit('SET_USER', e.data.user)
-				localStorage.setItem('user', JSON.stringify(e.data.user))
+				this.$store.commit('SET_AUTH', e.data.token)
 				window.removeEventListener('message', this.onMessage)
-				await this.$router.push('/')
+				this.$router.push('/')
 			}
 		},
 
@@ -126,12 +130,13 @@ export default {
 			)
 		},
 
+		// Authenticate with Github Account
 		async githubLogin() {
 			this.error = null
 			const newWindow = openWindow('', 'Login')
 
 			try {
-				const url = await this.$store.dispatch('fetchOauthUrlGithub')
+				const url = await this.$store.dispatch('authLoginSocialite', 'github', this.user)
 				newWindow.location.href = url
 			} catch (error) {
 				this.error = error
@@ -140,12 +145,13 @@ export default {
 			}
 		},
 
+		// Authenticate with Google Account
 		async googleLogin() {
 			this.error = null
 			const newWindow = openWindow('', 'Login')
 
 			try {
-				const url = await this.$store.dispatch('fetchOauthUrlGoogle')
+				const url = await this.$store.dispatch('authLoginSocialite', 'google', this.user)
 				newWindow.location.href = url
 			} catch (error) {
 				this.error = error
@@ -159,7 +165,7 @@ export default {
 			const newWindow = openWindow('', 'Login')
 
 			try {
-				const url = await this.$store.dispatch('fetchOauthUrlFacebook')
+				const url = await this.$store.dispatch('authLoginSocialite', 'facebook', this.user)
 				newWindow.location.href = url
 			} catch (error) {
 				this.error = error

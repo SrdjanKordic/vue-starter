@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import restApi from '../api/index.js'
 export default {
 	name: 'Users',
@@ -56,6 +57,9 @@ export default {
 			users: [],
 			loading: false,
 		}
+	},
+	computed: {
+		...mapState(['authUser']),
 	},
 	created() {
 		this.getUsers()

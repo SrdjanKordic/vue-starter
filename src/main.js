@@ -2,10 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import VueTabulator from 'vue-tabulator'
-import 'bootstrap'
+import Toasted from 'vue-toasted'
 
-Vue.use(VueTabulator)
+import 'bootstrap'
+Vue.use(Toasted)
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faBox, faCogs, faHouseUser, faPaperclip, faUsers } from '@fortawesome/free-solid-svg-icons'
