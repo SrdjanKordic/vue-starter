@@ -4,9 +4,6 @@
 			<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
 				<h3 class="mb-3 text-center">👋 Login to system</h3>
 				<p class="mb-3 text-center">Logged users have some privilages 🤷‍♂️</p>
-				<p v-if="loading">
-					Loading
-				</p>
 				<div v-if="error" class="alert alert-danger" role="alert">
 					{{ error }}
 				</div>
@@ -27,9 +24,14 @@
 								class="form-control"
 								placeholder="Your password"
 								v-model="user.password"
+								minlength="6"
 								required
 							/><br />
-							<button class="btn btn-primary w-100">Login</button>
+							<button v-if="!loading" class="btn btn-primary w-100">Login</button>
+							<button v-else class="btn btn-primary w-100" type="button" disabled>
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								Logging in...
+							</button>
 						</form>
 					</div>
 				</div>
@@ -93,17 +95,35 @@ export default {
 			}
 		},
 
+		// Function to authenticate user with email and password
 		async login() {
 			this.error = null
-
-			try {
-				await this.$store.dispatch('authLogin', this.user)
-				await this.$router.push('/')
-			} catch (error) {
-				this.error = error
-			} finally {
-				this.loading = false
-			}
+			this.loading = true
+			await this.$store.dispatch('authLogin', this.user).then(
+				({ data }) => {
+					if (data.success) {
+						this.$router.push('/')
+					}
+					this.loading = false
+				},
+				error => {
+					this.error = error.response ? error.response.data.message : error.message
+					if (this.error === undefined) {
+						this.error = null
+						if (error.password) {
+							error.password.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+						if (error.email) {
+							error.email.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+					}
+					this.loading = false
+				}
+			)
 		},
 
 		async githubLogin() {
