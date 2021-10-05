@@ -3,6 +3,7 @@ import SecondPage from '../views/SecondPage.vue'
 import UIKit from '../views/UIKit.vue'
 import Users from '../views/Users.vue'
 import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
 import Profile from '../views/Profile.vue'
 import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
@@ -14,6 +15,12 @@ export default [
 		path: '/login',
 		name: 'login',
 		component: Login,
+		beforeEnter: middleware.guest,
+	},
+	{
+		path: '/register',
+		name: 'register',
+		component: Register,
 		beforeEnter: middleware.guest,
 	},
 	{
