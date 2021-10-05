@@ -10,6 +10,9 @@
 				<div v-if="error" class="alert alert-danger" role="alert">
 					{{ error }}
 				</div>
+				<div v-if="info" class="alert alert-info" role="alert">
+					{{ info }}
+				</div>
 				<div class="card">
 					<div class="card-body">
 						<form @submit.prevent="sendResetPasswordLink">
@@ -21,7 +24,11 @@
 								v-model="email"
 								required
 							/><br />
-							<button class="btn btn-primary w-100">Request password reset</button>
+							<button v-if="!loading" class="btn btn-primary w-100">Request password reset</button>
+							<button v-else class="btn btn-primary w-100" type="button" disabled>
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								Sending reset link...
+							</button>
 						</form>
 					</div>
 				</div>
@@ -35,6 +42,7 @@ export default {
 	name: 'ForgotPassword',
 	data() {
 		return {
+			info: '',
 			error: '',
 			email: '',
 			loading: false,
@@ -42,15 +50,16 @@ export default {
 	},
 	methods: {
 		async sendResetPasswordLink() {
-			this.error = ''
 			this.loading = true
 			restApi.post(`/forgot-password`, { email: this.email }).then(
 				({ data }) => {
-					console.log(data)
+					this.error = ''
+					this.info = data.message
 					this.loading = false
 				},
 				error => {
-					console.log(error)
+					this.info = ''
+					this.error = error.response ? error.response.data.message : error.message
 					this.loading = false
 				}
 			)

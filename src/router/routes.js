@@ -5,6 +5,7 @@ import Users from '../views/Users.vue'
 import Login from '../views/auth/Login.vue'
 import Profile from '../views/Profile.vue'
 import ForgotPassword from '../views/auth/ForgotPassword.vue'
+import ResetPassword from '../views/auth/ResetPassword.vue'
 
 import middleware from './middleware'
 
@@ -19,6 +20,12 @@ export default [
 		path: '/forgot-password',
 		name: 'forgotPassword',
 		component: ForgotPassword,
+		beforeEnter: middleware.guest,
+	},
+	{
+		path: '/reset-password',
+		name: 'resetPassword',
+		component: ResetPassword,
 		beforeEnter: middleware.guest,
 	},
 	{
