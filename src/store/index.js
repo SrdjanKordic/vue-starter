@@ -72,7 +72,6 @@ export default new Vuex.Store({
 				restApi
 					.get('login/' + provider, user)
 					.then(resp => {
-						console.log(resp.data)
 						resolve(resp.data)
 					})
 					.catch(error => {
@@ -92,6 +91,19 @@ export default new Vuex.Store({
 						resolve()
 						router.push('/login')
 						window.location.reload()
+					})
+					.catch(error => {
+						reject(error)
+					})
+			})
+		},
+
+		refreshToken: () => {
+			return new Promise((resolve, reject) => {
+				restApi
+					.post(`token/refresh`)
+					.then(response => {
+						resolve(response)
 					})
 					.catch(error => {
 						reject(error)

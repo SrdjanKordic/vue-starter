@@ -12,13 +12,7 @@
 						<form v-if="!info" @submit.prevent="register">
 							<div class="form-group mb-2">
 								<label for="name" class="form-label">Name</label>
-								<input
-									type="text"
-									class="form-control"
-									placeholder="Your name"
-									v-model="user.name"
-									required
-								/>
+								<input type="text" class="form-control" placeholder="Your name" v-model="user.name" />
 							</div>
 
 							<div class="form-group mb-2">
@@ -105,12 +99,43 @@ export default {
 			restApi.post(`/register`, this.user).then(
 				({ data }) => {
 					this.error = ''
+					if (data.error) {
+						if (data.error.password) {
+							data.error.password.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+						if (data.error.email) {
+							data.error.email.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+						if (data.error.name) {
+							data.error.name.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+					}
+
 					this.info = data.message
 					this.loading = false
 				},
 				error => {
 					this.info = ''
 					this.error = error.response ? error.response.data.message : error.message
+					if (this.error === undefined) {
+						this.error = null
+						if (error.password) {
+							error.password.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+						if (error.email) {
+							error.email.forEach(er => {
+								this.error += er + ' '
+							})
+						}
+					}
 					this.loading = false
 				}
 			)
