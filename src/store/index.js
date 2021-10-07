@@ -10,6 +10,7 @@ export default new Vuex.Store({
 	state: {
 		token: localStorage.getItem('auth-token') || null,
 		authUser: decode(localStorage.getItem('auth-token')) || null,
+		account: null,
 		menuOpen: false,
 	},
 	getters: {
@@ -33,6 +34,10 @@ export default new Vuex.Store({
 			state.authUser = decode(state.token)
 		},
 
+		SET_ACCOUNT(state, account) {
+			state.account = account
+		},
+
 		UNSET_AUTH(state) {
 			state.token = null
 			state.authUser = null
@@ -46,7 +51,7 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		authLogin: ({ commit }, user) => {
+		authLogin: ({ commit, dispatch }, user) => {
 			return new Promise((resolve, reject) => {
 				restApi
 					.post('login', user)
@@ -57,6 +62,7 @@ export default new Vuex.Store({
 							reject(resp.data.error)
 						} else {
 							commit('SET_AUTH', resp.data.token)
+							dispatch('accountInfo')
 							resolve(resp)
 						}
 					})
@@ -104,6 +110,29 @@ export default new Vuex.Store({
 					.post(`token/refresh`)
 					.then(response => {
 						resolve(response)
+					})
+					.catch(error => {
+						reject(error)
+					})
+			})
+		},
+
+		accountInfo: ({ commit, state }) => {
+			if (state.account === null && state.token) {
+				restApi.get(`user/${state.authUser.id}`).then(resp => {
+					commit('SET_ACCOUNT', resp.data)
+				})
+			}
+		},
+
+		accountUpdate: ({ commit, state }, account) => {
+			return new Promise((resolve, reject) => {
+				restApi
+					.put(`user/${state.authUser.id}`, account)
+					.then(resp => {
+						commit('SET_ACCOUNT', resp.data)
+						Vue.toasted.success(`Account info is updated`)
+						resolve(resp)
 					})
 					.catch(error => {
 						reject(error)

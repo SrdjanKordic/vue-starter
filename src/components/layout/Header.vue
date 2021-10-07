@@ -6,7 +6,7 @@
 			</a>
 			<input type="text" class="form-control w-75" placeholder="🔍  Search..." />
 			<div v-if="isAuth" class="dropdown w-auto">
-				<div role="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+				<div role="button" id="account" data-bs-toggle="dropdown" aria-expanded="false">
 					<img
 						:src="authUser.avatar ? authUser.avatar : 'https://picsum.photos/64/64'"
 						width="32"
@@ -16,9 +16,9 @@
 					<span class="d-none d-sm-inline-block ms-2 me-2">{{ authUser.name }}</span>
 				</div>
 
-				<ul class="dropdown-menu" aria-labelledby="profile">
+				<ul class="dropdown-menu" aria-labelledby="account">
 					<li>
-						<router-link class="dropdown-item" to="/profile"> Profile </router-link>
+						<router-link class="dropdown-item" to="/account"> My Account </router-link>
 					</li>
 					<li><a role="button" class="dropdown-item" @click="logout()">Log out</a></li>
 				</ul>

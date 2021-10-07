@@ -24,7 +24,7 @@
 								class="form-control"
 								placeholder="Your password"
 								v-model="user.password"
-								minlength="6"
+								minlength="3"
 								required
 							/><br />
 							<button v-if="!loading" class="btn btn-primary w-100">Login</button>
@@ -103,31 +103,32 @@ export default {
 		async login() {
 			this.error = null
 			this.loading = true
-			await this.$store.dispatch('authLogin', this.user).then(
-				({ data }) => {
+
+			await this.$store
+				.dispatch('authLogin', this.user)
+				.then(({ data }) => {
 					if (data.success) {
 						this.$router.push('/')
 					}
 					this.loading = false
-				},
-				error => {
+				})
+				.catch(error => {
 					this.error = error.response ? error.response.data.message : error.message
 					if (this.error === undefined) {
-						this.error = null
-						if (error.password) {
-							error.password.forEach(er => {
+						this.error = ''
+						if (error.response.data.error.password) {
+							error.response.data.error.password.forEach(er => {
 								this.error += er + ' '
 							})
 						}
-						if (error.email) {
-							error.email.forEach(er => {
+						if (error.response.data.error.email) {
+							error.response.data.error.email.forEach(er => {
 								this.error += er + ' '
 							})
 						}
 					}
 					this.loading = false
-				}
-			)
+				})
 		},
 
 		// Authenticate with Github Account

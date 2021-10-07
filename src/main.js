@@ -5,14 +5,44 @@ import store from './store'
 import Toasted from 'vue-toasted'
 
 import 'bootstrap'
-Vue.use(Toasted)
+
+Vue.use(Toasted, {
+	duration: 4000,
+	position: 'bottom-right',
+	router,
+})
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faBox, faCogs, faHouseUser, faPaperclip, faUsers } from '@fortawesome/free-solid-svg-icons'
+import {
+	faBars,
+	faBox,
+	faClock,
+	faCogs,
+	faHouseUser,
+	faInfoCircle,
+	faLock,
+	faPaperclip,
+	faUser,
+	faUsers,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons'
 
-library.add(faBars, faHouseUser, faPaperclip, faBox, faCogs, faUsers, faGithub, faGoogle, faFacebook)
+library.add(
+	faBars,
+	faHouseUser,
+	faPaperclip,
+	faBox,
+	faCogs,
+	faUsers,
+	faGithub,
+	faGoogle,
+	faFacebook,
+	faInfoCircle,
+	faUser,
+	faClock,
+	faLock
+)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

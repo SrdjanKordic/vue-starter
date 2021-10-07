@@ -1,10 +1,10 @@
 import Home from '../views/Home.vue'
 import SecondPage from '../views/SecondPage.vue'
 import UIKit from '../views/UIKit.vue'
-import Users from '../views/Users.vue'
+import Users from '../views/users/Users.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
-import Profile from '../views/Profile.vue'
+import Account from '../views/account/Account.vue'
 import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
 
@@ -56,9 +56,35 @@ export default [
 		beforeEnter: middleware.user,
 	},
 	{
-		path: '/profile',
-		name: 'profile',
-		component: Profile,
+		path: '/account',
+		name: 'account',
+		component: Account,
+		meta: {
+			title: 'Your account',
+			backTo: '/',
+		},
 		beforeEnter: middleware.user,
+		children: [
+			{
+				path: '',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Overview.vue'),
+				name: 'accountOverview',
+			},
+			{
+				path: 'information',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Information.vue'),
+				name: 'accountInformation',
+			},
+			{
+				path: 'timeline',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Timeline.vue'),
+				name: 'accountTimeline',
+			},
+			{
+				path: 'permissions',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Permissions.vue'),
+				name: 'accountPermissions',
+			},
+		],
 	},
 ]

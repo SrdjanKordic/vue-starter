@@ -48,7 +48,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import restApi from '../api/index.js'
+import restApi from '../../api/index.js'
 export default {
 	name: 'Users',
 	data() {
