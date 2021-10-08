@@ -54,6 +54,40 @@ export default [
 		name: 'users',
 		component: Users,
 		beforeEnter: middleware.user,
+		children: [
+			{
+				path: '',
+				component: () => import(/* webpackChunkName: "account" */ '../views/users/List.vue'),
+			},
+			{
+				path: ':id',
+				component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Edit.vue'),
+				children: [
+					{
+						path: '',
+						component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Overview.vue'),
+						name: 'userOverview',
+					},
+					{
+						path: 'information',
+						component: () =>
+							import(/* webpackChunkName: "account" */ '../views/users/edit/Information.vue'),
+						name: 'userInformation',
+					},
+					{
+						path: 'timeline',
+						component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Timeline.vue'),
+						name: 'userTimeline',
+					},
+					{
+						path: 'permissions',
+						component: () =>
+							import(/* webpackChunkName: "account" */ '../views/users/edit/Permissions.vue'),
+						name: 'userPermissions',
+					},
+				],
+			},
+		],
 	},
 	{
 		path: '/account',
@@ -67,8 +101,13 @@ export default [
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Overview.vue'),
-				name: 'accountOverview',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/General.vue'),
+				name: 'accountGeneral',
+			},
+			{
+				path: 'password',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/ChangePassword.vue'),
+				name: 'accountPassword',
 			},
 			{
 				path: 'information',
@@ -76,14 +115,14 @@ export default [
 				name: 'accountInformation',
 			},
 			{
-				path: 'timeline',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Timeline.vue'),
-				name: 'accountTimeline',
+				path: 'social',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Social.vue'),
+				name: 'accountSocial',
 			},
 			{
-				path: 'permissions',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Permissions.vue'),
-				name: 'accountPermissions',
+				path: 'notifications',
+				component: () => import(/* webpackChunkName: "account" */ '../views/account/Notifications.vue'),
+				name: 'accountNotifications',
 			},
 		],
 	},

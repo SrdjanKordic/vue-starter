@@ -1,61 +1,61 @@
 .btn {
-  //letter-spacing: 0.3px;
-  //border-radius: $border-radius-pill;
-  //color: #fff;
+	//letter-spacing: 0.3px;
+	//border-radius: $border-radius-pill;
+	//color: #fff;
 }
 
 @each $color, $value in $theme-colors {
-  .btn-#{$color} {
-    border: 0;
-    color: #fff;
+	.btn-#{$color} {
+		border: 0;
+		color: #fff;
 
-    &:hover {
-      border-color: transparent;
-    }
-  }
+		&:hover {
+			border-color: transparent;
+		}
+	}
 }
 
 .btn-light {
-  color: $dark;
+	color: $dark;
 }
 
 @each $color, $value in $theme-colors {
-  .btn-outline-#{$color} {
-    border-color: $color;
-    box-shadow: 0 8px 24px rgba(16, 31, 59, 0.08);
+	.btn-outline-#{$color} {
+		border-color: $color;
+		box-shadow: 0 8px 24px rgba(16, 31, 59, 0.08);
 
-    &:hover {
-      box-shadow: 0 8px 24px rgba(16, 31, 59, 0.15);
-      border-color: transparent;
-    }
-  }
+		&:hover {
+			box-shadow: 0 8px 24px rgba(16, 31, 59, 0.15);
+			border-color: transparent;
+		}
+	}
 }
 
 .btn-sm {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 // Buttons with plus icon
 .btn-big-icon {
-  position: relative;
-  padding-right: 4rem;
+	position: relative;
+	padding-right: 4rem;
 
-  .fa-plus-circle {
-    font-size: 2.4rem;
-    position: absolute;
-    top: 6px;
-    right: 6px;
-  }
+	.fa-plus-circle {
+		font-size: 2.4rem;
+		position: absolute;
+		top: 6px;
+		right: 6px;
+	}
 
-  &.btn-sm {
-    padding-right: 3rem;
+	&.btn-sm {
+		padding-right: 3rem;
 
-    .fa-plus-circle {
-      font-size: 1.8rem;
-      top: 3px;
-      right: 3px;
-    }
-  }
+		.fa-plus-circle {
+			font-size: 1.8rem;
+			top: 3px;
+			right: 3px;
+		}
+	}
 }
 
 // Circle buttons with icons
@@ -64,49 +64,49 @@
 .btn-icon-success,
 .btn-icon-warning,
 .btn-icon-danger {
-  font-size: 1.5rem;
-  padding: 0.45rem 0 0.3rem;
-  width: 50px;
+	font-size: 1.5rem;
+	padding: 0.45rem 0 0.3rem;
+	width: 50px;
 
-  &.btn-sm {
-    font-size: 1rem;
-    padding: 0.3rem 0 0.2rem;
-    width: 34px;
-  }
+	&.btn-sm {
+		font-size: 1rem;
+		padding: 0.3rem 0 0.2rem;
+		width: 34px;
+	}
 }
 
 .btn-icon-success {
-  background-color: $success-lighter;
-  color: $success;
+	background-color: $success-lighter;
+	color: $success;
 
-  &:hover {
-    background-color: $success-light;
-  }
+	&:hover {
+		background-color: $success-light;
+	}
 }
 
 .btn-icon-info {
-  background-color: $info-lighter;
-  color: $info;
+	background-color: $info-lighter;
+	color: $info;
 
-  &:hover {
-    background-color: $info-light;
-  }
+	&:hover {
+		background-color: $info-light;
+	}
 }
 
 .btn-icon-warning {
-  background-color: $warning-lighter;
-  color: $warning;
+	background-color: $warning-lighter;
+	color: $warning;
 
-  &:hover {
-    background-color: $warning-light;
-  }
+	&:hover {
+		background-color: $warning-light;
+	}
 }
 
 .btn-icon-danger {
-  background-color: $danger-lighter;
-  color: $danger;
+	background-color: $danger-lighter;
+	color: $danger;
 
-  &:hover {
-    background-color: $danger-light;
-  }
+	&:hover {
+		background-color: $danger-light;
+	}
 }

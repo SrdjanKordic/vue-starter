@@ -49,10 +49,10 @@
 </template>
 
 <script>
-//import restApi from "../api/index.js";
+import restApi from '../../../api'
 import { mapState } from 'vuex'
 export default {
-	name: 'Overview',
+	name: 'Permissions',
 	data() {
 		return {
 			user: {},
@@ -63,8 +63,22 @@ export default {
 		...mapState(['authUser']),
 	},
 	created() {
-		this.user = this.authUser
+		this.loadUser()
 	},
-	methods: {},
+	methods: {
+		loadUser() {
+			this.loading = true
+			restApi
+				.get('user/' + this.$route.params.id)
+				.then(({ data }) => {
+					this.user = data
+					this.loading = false
+				})
+				.catch(error => {
+					this.loading = false
+					console.log(error)
+				})
+		},
+	},
 }
 </script>

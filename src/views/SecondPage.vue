@@ -1,30 +1,30 @@
 <template>
-    <div>
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
-                <li class="breadcrumb-item active" aria-current="page">Second page</li>
-            </ol>
-        </nav>
-        <!-- #Breadcrumb -->
+	<div>
+		<PageHeader
+			:data="{
+				name: 'Second Page',
+				breadcrumbs: [{ name: 'Home', to: '/' }],
+			}"
+		/>
 
-        <div class="row">
-            <div class="col-12">
-                This is a second page <br />
-                {{ name }}
-            </div>
-        </div>
-    </div>
+		<div class="row">
+			<div class="col-12">
+				This is a second page <br />
+				{{ name }}
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
+import PageHeader from '@/components/layout/PageHeader'
 export default {
-    name: 'SecondPage',
-    data() {
-        return {
-            name: 'Srdjan Kordic'
-        }
-    }
+	name: 'SecondPage',
+	components: { PageHeader },
+	data() {
+		return {
+			name: 'Srdjan Kordic',
+		}
+	},
 }
 </script>

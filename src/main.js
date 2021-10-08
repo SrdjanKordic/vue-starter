@@ -23,6 +23,7 @@ import {
 	faLock,
 	faPaperclip,
 	faUser,
+	faUserEdit,
 	faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -41,7 +42,8 @@ library.add(
 	faInfoCircle,
 	faUser,
 	faClock,
-	faLock
+	faLock,
+	faUserEdit
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
