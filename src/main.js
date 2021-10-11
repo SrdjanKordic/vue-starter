@@ -18,6 +18,7 @@ import {
 	faBox,
 	faClock,
 	faCogs,
+	faEdit,
 	faHouseUser,
 	faInfoCircle,
 	faLock,
@@ -43,7 +44,8 @@ library.add(
 	faUser,
 	faClock,
 	faLock,
-	faUserEdit
+	faUserEdit,
+	faEdit
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

@@ -7,6 +7,7 @@ import Register from '../views/auth/Register.vue'
 import Account from '../views/account/Account.vue'
 import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
+import SettingsParent from '../views/settings/SettingsParent.vue'
 
 import middleware from './middleware'
 
@@ -123,6 +124,23 @@ export default [
 				path: 'notifications',
 				component: () => import(/* webpackChunkName: "account" */ '../views/account/Notifications.vue'),
 				name: 'accountNotifications',
+			},
+		],
+	},
+	{
+		path: '/settings',
+		component: SettingsParent,
+		beforeEnter: middleware.user,
+		children: [
+			{
+				path: '',
+				component: () => import(/* webpackChunkName: "account" */ '../views/settings/General.vue'),
+				name: 'settingsGeneral',
+			},
+			{
+				path: 'roles',
+				component: () => import(/* webpackChunkName: "account" */ '../views/settings/Roles.vue'),
+				name: 'settingsRoles',
 			},
 		],
 	},

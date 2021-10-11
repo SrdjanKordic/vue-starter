@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="card">
-					<div class="card-body">
+					<div v-if="!error" class="card-body">
 						<table v-if="!loading" class="table table-hover">
 							<thead>
 								<tr class="rounded">
@@ -46,6 +46,11 @@
 							</div>
 						</div>
 					</div>
+					<div v-else class="card-body">
+						<div class="alert alert-danger" role="alert">
+							{{ error }}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -64,6 +69,7 @@ export default {
 			name: 'Srdjan Kordic',
 			users: [],
 			loading: false,
+			error: '',
 		}
 	},
 	computed: {
@@ -81,7 +87,9 @@ export default {
 					this.loading = false
 				},
 				error => {
-					console.log(error)
+					console.log(error.response.data.message)
+					console.log(error.response.data.permission)
+					this.error = error.response.data.message
 				}
 			)
 		},

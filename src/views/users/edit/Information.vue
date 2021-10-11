@@ -108,6 +108,7 @@ export default {
 				})
 				.catch(error => {
 					console.log(error)
+					Vue.toasted.error(error.response.data.message)
 				})
 		},
 	},
