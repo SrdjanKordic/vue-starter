@@ -7,7 +7,7 @@
 				</aside>
 				<div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xl-10 col-content" id="content">
 					<Header />
-					<div class="main-container">
+					<div class="main-container mb-5">
 						<router-view></router-view>
 					</div>
 				</div>
