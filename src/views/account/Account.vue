@@ -23,16 +23,6 @@
 					<li class="nav-item">
 						<router-link
 							class="nav-link"
-							:class="this.$route.name === 'accountPassword' ? 'active' : ''"
-							aria-current="page"
-							to="/account/password"
-						>
-							<font-awesome-icon :icon="['fas', 'lock']" class="me-2" /> Change Password
-						</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link
-							class="nav-link"
 							:class="this.$route.name === 'accountInformation' ? 'active' : ''"
 							aria-current="page"
 							to="/account/information"
@@ -58,6 +48,16 @@
 							to="/account/notifications"
 						>
 							<font-awesome-icon :icon="['fas', 'lock']" class="me-2" /> Notifications
+						</router-link>
+					</li>
+					<li class="nav-item">
+						<router-link
+							class="nav-link"
+							:class="this.$route.name === 'accountPassword' ? 'active' : ''"
+							aria-current="page"
+							to="/account/password"
+						>
+							<font-awesome-icon :icon="['fas', 'lock']" class="me-2" /> Change Password
 						</router-link>
 					</li>
 				</ul>

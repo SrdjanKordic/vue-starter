@@ -6,11 +6,11 @@
 				<small>Create and manage user roles and permissions</small>
 			</div>
 			<div class="card-body">
-				<table class="table table-condensed">
+				<table v-if="!loading" class="table table-condensed">
 					<thead>
 						<th>Name</th>
 						<th>Permissions</th>
-						<th></th>
+						<th v-if="authUser.permissions.includes('role-update')"></th>
 					</thead>
 					<tbody>
 						<template v-for="(role, i) in roles">
@@ -25,6 +25,7 @@
 								</td>
 								<td>
 									<button
+										v-if="authUser.permissions.includes('role-update')"
 										class="btn btn-primary btn-sm"
 										data-bs-toggle="modal"
 										data-bs-target="#roleModal"
@@ -41,7 +42,13 @@
 						</template>
 					</tbody>
 				</table>
+				<div v-else class="text-center">
+					<div class="spinner-border" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
 				<button
+					v-if="authUser.permissions.includes('role-create')"
 					class="btn btn-primary float-end"
 					data-bs-toggle="modal"
 					data-bs-target="#roleModal"
@@ -122,8 +129,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Multiselect from 'vue-multiselect'
+import { mapState } from 'vuex'
 import restApi from '../../api'
 import { Modal } from 'bootstrap'
 export default {
@@ -138,25 +145,31 @@ export default {
 			selectedPermissions: null,
 			optionsPermissions: [],
 			$roleModal: null,
+			loading: false,
 		}
+	},
+	computed: {
+		...mapState(['authUser']),
 	},
 	created() {
 		this.loadRoles()
 		this.loadPermissions()
 	},
 	mounted() {
-		console.log('moundet')
 		this.$roleModal = new Modal('#roleModal')
 	},
 	methods: {
 		loadRoles() {
+			this.loading = true
 			restApi
 				.get('/roles')
 				.then(({ data }) => {
 					this.roles = data
+					this.loading = false
 				})
 				.catch(error => {
 					console.log(error)
+					this.loading = false
 				})
 		},
 		editRole(role) {
@@ -178,11 +191,17 @@ export default {
 				.then(() => {
 					this.loadRoles()
 					this.$roleModal.hide()
-					Vue.toasted.success(`Role successfully updated`)
+					this.$swal.fire({
+						icon: 'success',
+						title: 'Role successfully updated',
+					})
 				})
 				.catch(error => {
 					console.log(error)
-					Vue.toasted.error(error.response.data.message)
+					this.$swal.fire({
+						icon: 'error',
+						title: error.response.data.message,
+					})
 				})
 		},
 		storeRole() {
@@ -192,31 +211,35 @@ export default {
 				.then(() => {
 					this.loadRoles()
 					this.$roleModal.hide()
-					Vue.toasted.success(`Role successfully added`)
+					this.$swal.fire({
+						icon: 'success',
+						title: 'Role successfully added',
+					})
 				})
 				.catch(error => {
 					console.log(error)
-					Vue.toasted.error(error.response.data.message)
+					this.$swal.fire({
+						icon: 'error',
+						title: error.response.data.message,
+					})
 				})
 		},
 		reset() {
-			console.log('Reset')
 			this.role = {}
 			this.type = ''
 			this.selectedPermissions = null
 		},
 		loadPermissions() {
 			// Get all permisions from API
-			this.optionsPermissions = [
-				'user-access',
-				'user-create',
-				'user-update',
-				'user-delete',
-				'role-access',
-				'role-create',
-				'role-update',
-				'role-delete',
-			]
+			restApi
+				.get('/permissions')
+				.then(({ data }) => {
+					console.log(data)
+					this.optionsPermissions = data
+				})
+				.catch(error => {
+					console.log(error)
+				})
 		},
 	},
 }

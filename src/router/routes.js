@@ -1,7 +1,7 @@
 import Home from '../views/Home.vue'
 import SecondPage from '../views/SecondPage.vue'
 import UIKit from '../views/UIKit.vue'
-import Users from '../views/users/Users.vue'
+import Users from '../views/users/UsersParent.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import Account from '../views/account/Account.vue'
@@ -58,11 +58,11 @@ export default [
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackChunkName: "account" */ '../views/users/List.vue'),
+				component: () => import(/* webpackChunkName: "account" */ '../views/users/Users.vue'),
 			},
 			{
 				path: ':id',
-				component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Edit.vue'),
+				component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/EditParent.vue'),
 				children: [
 					{
 						path: '',

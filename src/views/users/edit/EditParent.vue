@@ -61,6 +61,13 @@
 									<span>{{ user.country }}</span>
 								</li>
 							</ul>
+							<button
+								v-if="authUser.permissions.includes('user-delete')"
+								class="btn btn-danger float-end w-100"
+								@click="confirmDelete(user)"
+							>
+								Remove
+							</button>
 						</div>
 					</div>
 				</div>
@@ -120,7 +127,7 @@ import restApi from '../../../api'
 import { mapState } from 'vuex'
 import PageHeader from '../../../components/layout/PageHeader.vue'
 export default {
-	name: 'Edit',
+	name: 'EditParent',
 	components: { PageHeader },
 	data() {
 		return {
@@ -147,6 +154,50 @@ export default {
 				.catch(error => {
 					console.log(error)
 					this.loading = false
+				})
+		},
+		confirmDelete(user) {
+			this.$swal
+				.fire({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					icon: 'warning',
+					position: 'center',
+					showCancelButton: true,
+					showConfirmButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!',
+					toast: false,
+					timer: 0,
+				})
+				.then(result => {
+					if (result.isConfirmed) {
+						// Remove from backend
+						if (this.user.id === this.authUser.id) {
+							this.$swal.fire({
+								icon: 'error',
+								title: 'You cannot perform this action',
+							})
+						} else {
+							restApi
+								.delete('/user/' + user.id)
+								.then(() => {
+									this.$swal.fire({
+										icon: 'success',
+										title: 'User ' + user.name + ' successfully removed!',
+									})
+									this.$router.push('/users')
+								})
+								.catch(error => {
+									console.log(error)
+									this.$swal.fire({
+										icon: 'error',
+										title: error,
+									})
+								})
+						}
+					}
 				})
 		},
 	},

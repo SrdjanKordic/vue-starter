@@ -16,6 +16,8 @@
 @import 'colors';
 @import 'checkbox';
 
+@import '~sweetalert2/dist/sweetalert2.min.css';
+
 h1,
 h2,
 h3,
@@ -156,4 +158,11 @@ h6 {
 
 .tag {
 	padding: 4px 6px;
+}
+
+.input-loading {
+	position: relative;
+	float: right;
+	margin-right: 15px;
+	top: -27px;
 }

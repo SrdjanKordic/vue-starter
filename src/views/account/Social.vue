@@ -29,6 +29,10 @@
 					<label for="github" class="form-label">Github</label>
 					<input type="text" class="form-control" v-model="social.github" placeholder="Add link" />
 				</div>
+				<div class="form-group col-6 mb-2">
+					<label for="github" class="form-label">Youtube</label>
+					<input type="text" class="form-control" v-model="social.youtube" placeholder="Add link" />
+				</div>
 			</div>
 		</div>
 	</div>

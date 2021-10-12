@@ -1,29 +1,48 @@
 <template>
 	<div class="card fade show">
 		<div class="card-header">
-			<h4 class="mb-0">Informations</h4>
+			<h4 class="mb-0">
+				Informations
+				<div v-if="loading" class="spinner-border spinner-border-sm text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</h4>
 			<small>Your informations, let other to know more about you</small>
 		</div>
 		<div class="card-body">
 			<form v-if="user" @submit.prevent="updateUser">
 				<div class="form-group mb-2">
 					<label for="name" class="form-label">Name</label>
-					<input type="text" v-model="user.name" class="form-control" required />
+					<input :readonly="readonly" type="text" v-model="user.name" class="form-control" required />
 				</div>
 				<div class="form-group mb-2">
 					<label for="dob" class="form-label">Date of Birth</label>
-					<input type="date" v-model="user.dob" class="form-control" />
+					<input :readonly="readonly" type="date" v-model="user.dob" class="form-control" />
 				</div>
 				<div class="form-group mb-2">
 					<label for="" class="form-label">Sex</label><br />
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" value="male" v-model="user.sex" id="male" />
+						<input
+							:disabled="readonly"
+							class="form-check-input"
+							type="radio"
+							value="male"
+							v-model="user.sex"
+							id="male"
+						/>
 						<label class="form-check-label" for="male">
 							Male
 						</label>
 					</div>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" value="female" v-model="user.sex" id="female" />
+						<input
+							:disabled="readonly"
+							class="form-check-input"
+							type="radio"
+							value="female"
+							v-model="user.sex"
+							id="female"
+						/>
 						<label class="form-check-label" for="female">
 							Female
 						</label>
@@ -32,32 +51,33 @@
 
 				<div class="form-group mb-2">
 					<label for="state" class="form-label">Country</label>
-					<input type="text" v-model="user.country" class="form-control" />
+					<input :readonly="readonly" type="text" v-model="user.country" class="form-control" />
 				</div>
 				<div class="form-group mb-2">
 					<label for="state" class="form-label">State</label>
-					<input type="text" v-model="user.state" class="form-control" />
+					<input :readonly="readonly" type="text" v-model="user.state" class="form-control" />
 				</div>
 				<div class="form-group mb-2">
 					<label for="city" class="form-label">City</label>
-					<input type="text" v-model="user.city" class="form-control" />
+					<input :readonly="readonly" type="text" v-model="user.city" class="form-control" />
 				</div>
 				<div class="form-group mb-2">
 					<label for="address" class="form-label">Address</label>
-					<input type="text" v-model="user.address" class="form-control" />
+					<input :readonly="readonly" type="text" v-model="user.address" class="form-control" />
 				</div>
 				<div class="form-group mb-2">
 					<label for="phone" class="form-label">Phone</label>
-					<input type="text" v-model="user.phone" class="form-control" />
+					<input :readonly="readonly" type="text" v-model="user.phone" class="form-control" />
 				</div>
-				<button class="btn btn-primary float-end">Update</button>
+				<button v-if="authUser.permissions.includes('user-update')" class="btn btn-primary float-end">
+					Update
+				</button>
 			</form>
 		</div>
 	</div>
 </template>
 
 <script>
-import Vue from 'vue'
 import restApi from '../../../api'
 import { mapState } from 'vuex'
 export default {
@@ -70,6 +90,13 @@ export default {
 	},
 	computed: {
 		...mapState(['authUser']),
+		readonly() {
+			if (!this.authUser.permissions.includes('user-update')) {
+				return true
+			} else {
+				return false
+			}
+		},
 	},
 	created() {
 		this.loadUser()
@@ -104,11 +131,18 @@ export default {
 				.put('user/' + this.$route.params.id, data)
 				.then(({ data }) => {
 					this.user = data
-					Vue.toasted.success(`User successfully updated`)
+					this.$swal.fire({
+						icon: 'success',
+						title: 'User successfully updated',
+					})
 				})
 				.catch(error => {
 					console.log(error)
-					Vue.toasted.error(error.response.data.message)
+
+					this.$swal.fire({
+						icon: 'error',
+						title: error.response.data.message,
+					})
 				})
 		},
 	},

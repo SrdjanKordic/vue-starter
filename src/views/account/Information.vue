@@ -73,6 +73,7 @@ export default {
 	},
 	methods: {
 		update() {
+			this.loading = true
 			let data = {
 				name: this.account.name,
 				dob: this.account.dob,
@@ -85,7 +86,9 @@ export default {
 			}
 			this.$store
 				.dispatch('accountUpdate', data)
-				.then(() => {})
+				.then(() => {
+					this.loading = false
+				})
 				.catch(() => {})
 		},
 	},

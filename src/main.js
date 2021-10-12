@@ -2,14 +2,16 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Toasted from 'vue-toasted'
+import VueSweetalert2 from 'vue-sweetalert2'
 
 import 'bootstrap'
 
-Vue.use(Toasted, {
-	duration: 4000,
-	position: 'bottom-right',
-	router,
+Vue.use(VueSweetalert2, {
+	toast: true,
+	position: 'top-end',
+	showConfirmButton: false,
+	timer: 3000,
+	timerProgressBar: true,
 })
 
 import { library } from '@fortawesome/fontawesome-svg-core'

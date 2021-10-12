@@ -10,7 +10,7 @@
 		<div class="row p-0">
 			<div class="col-xl-3 col-lg-4 col-md-4 order-1 order-md-0">
 				<ul class="nav nav-pills mb-2 flex-column nav-left">
-					<li class="nav-item">
+					<li class="nav-item" v-if="authUser.permissions.includes('settings-general-access')">
 						<router-link
 							class="nav-link"
 							:class="this.$route.name === 'settingsGeneral' ? 'active' : ''"
@@ -20,7 +20,7 @@
 							<font-awesome-icon :icon="['fas', 'cogs']" class="me-2" /> General
 						</router-link>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" v-if="authUser.permissions.includes('role-access')">
 						<router-link
 							class="nav-link"
 							:class="this.$route.name === 'settingsRoles' ? 'active' : ''"
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import PageHeader from '@/components/layout/PageHeader'
 export default {
 	name: 'SettingsParent',
@@ -48,6 +49,9 @@ export default {
 			error: '',
 			user: {},
 		}
+	},
+	computed: {
+		...mapState(['authUser']),
 	},
 	components: {
 		PageHeader,

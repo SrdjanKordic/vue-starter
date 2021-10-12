@@ -33,12 +33,12 @@
 					</router-link>
 				</li>
 				<li class="mb-2" v-if="isAuth"><div class="text-warning">Settings</div></li>
-				<li class="mb-2" v-if="isAuth">
+				<li class="mb-2" v-if="isAuth && authUser.permissions.includes('user-access')">
 					<router-link class="btn text-start px-3" to="/users">
 						<font-awesome-icon :icon="['fas', 'users']" class="me-1" /> Users
 					</router-link>
 				</li>
-				<li class="mb-2" v-if="isAuth">
+				<li class="mb-2" v-if="isAuth && authUser.permissions.includes('settings-general-access')">
 					<router-link class="btn text-start px-3" to="/settings">
 						<font-awesome-icon :icon="['fas', 'cogs']" class="me-1" /> Settings
 					</router-link>
@@ -53,7 +53,7 @@ import { mapState, mapGetters } from 'vuex'
 export default {
 	name: 'Sidebar',
 	computed: {
-		...mapState(['menuOpen', 'token']),
+		...mapState(['menuOpen', 'token', 'authUser']),
 		...mapGetters(['isAuth']),
 	},
 }
