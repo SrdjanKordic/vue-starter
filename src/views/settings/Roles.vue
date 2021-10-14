@@ -10,7 +10,7 @@
 					<thead>
 						<th>Name</th>
 						<th>Permissions</th>
-						<th v-if="authUser.permissions.includes('role-update')"></th>
+						<th v-if="authUser.permissions.includes('ROLE_UPDATE')"></th>
 					</thead>
 					<tbody>
 						<template v-for="(role, i) in roles">
@@ -25,7 +25,7 @@
 								</td>
 								<td>
 									<button
-										v-if="authUser.permissions.includes('role-update')"
+										v-if="authUser.permissions.includes('ROLE_UPDATE')"
 										class="btn btn-primary btn-sm"
 										data-bs-toggle="modal"
 										data-bs-target="#roleModal"
@@ -48,7 +48,7 @@
 					</div>
 				</div>
 				<button
-					v-if="authUser.permissions.includes('role-create')"
+					v-if="authUser.permissions.includes('ROLE_CREATE')"
 					class="btn btn-primary float-end"
 					data-bs-toggle="modal"
 					data-bs-target="#roleModal"

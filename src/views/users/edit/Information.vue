@@ -69,7 +69,7 @@
 					<label for="phone" class="form-label">Phone</label>
 					<input :readonly="readonly" type="text" v-model="user.phone" class="form-control" />
 				</div>
-				<button v-if="authUser.permissions.includes('user-update')" class="btn btn-primary float-end">
+				<button v-if="authUser.permissions.includes('USER_UPDATE')" class="btn btn-primary float-end">
 					Update
 				</button>
 			</form>
@@ -91,7 +91,7 @@ export default {
 	computed: {
 		...mapState(['authUser']),
 		readonly() {
-			if (!this.authUser.permissions.includes('user-update')) {
+			if (!this.authUser.permissions.includes('USER_UPDATE')) {
 				return true
 			} else {
 				return false

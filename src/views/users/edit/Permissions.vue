@@ -10,30 +10,18 @@
 				<div class="col-12">
 					<div class="form-group">
 						<label for="role">Role</label>
-						<select v-model="user.role_id" class="form-select" name="" id="">
-							<option value="null">Select role</option>
+						<select v-model="user.role_id" @change="updatePermissions()" class="form-select" name="" id="">
+							<option :value="null">Custom permissions</option>
 							<template v-for="(role, i) in roles">
 								<option :key="i" :value="role.id">{{ role.name }}</option>
 							</template>
 						</select>
 					</div>
-					<div class="form-group my-3">
-						<div class="form-check form-switch d-flex align-items-center">
-							<input
-								class="form-check-input"
-								v-model="customPermissins"
-								type="checkbox"
-								id="flexSwitchCheckDefault"
-							/>
-							<label class="form-check-label ms-2" for="flexSwitchCheckChecked">
-								Choose custom permissions for user
-							</label>
-						</div>
-					</div>
 				</div>
 			</div>
 
-			<div v-if="customPermissins" class="table-responsive">
+			<div class="table-responsive mt-3">
+				<p class="mb-0" v-if="customPermissins">Chose permissions for user</p>
 				<table role="table" aria-busy="false" aria-colcount="5" class="table b-table table-striped">
 					<thead role="rowgroup" class="">
 						<tr role="row" class="">
@@ -50,40 +38,41 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.userAccess"
+										v-model="permissions.USER_ACCESS"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
+										@click="permissionsCheck()"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.userCreate"
+										v-model="permissions.USER_CREATE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.userUpdate"
+										v-model="permissions.USER_UPDATE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.userDelete"
+										v-model="permissions.USER_DELETE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
@@ -93,40 +82,40 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.roleAccess"
+										v-model="permissions.ROLE_ACCESS"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.roleCreate"
+										v-model="permissions.ROLE_CREATE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.roleUpdate"
+										v-model="permissions.ROLE_UPDATE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.roleDelete"
+										v-model="permissions.ROLE_DELETE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
@@ -136,20 +125,20 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.settingsGeneralAccess"
+										v-model="permissions.SETTINGS_GENERAL_ACCESS"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
+										:disabled="!customPermissins"
 										class="form-check-input"
-										v-model="permissions.settingsGeneralUpdate"
+										v-model="permissions.SETTINGS_GENERAL_UPDATE"
 										type="checkbox"
-										id="flexSwitchCheckDefault"
 									/>
 								</div>
 							</td>
@@ -159,7 +148,7 @@
 					</tbody>
 				</table>
 			</div>
-			<button v-if="authUser.permissions.includes('user-update')" class="btn btn-primary float-end">
+			<button v-if="authUser.permissions.includes('USER_UPDATE')" class="btn btn-primary float-end">
 				Update
 			</button>
 		</div>
@@ -182,6 +171,7 @@ export default {
 			loading: false,
 			roles: [],
 			customPermissins: false,
+			allPermissions: {},
 			permissions: {},
 		}
 	},
@@ -191,8 +181,11 @@ export default {
 	created() {
 		this.loadUser()
 		this.loadRoles()
+		this.loadPermissions()
 	},
+	updated() {},
 	methods: {
+		// Load user
 		loadUser() {
 			this.loading = true
 			restApi
@@ -200,6 +193,7 @@ export default {
 				.then(({ data }) => {
 					this.user = data
 					this.customPermissins = this.user.permissions ? true : false
+					this.updatePermissions()
 					this.loading = false
 				})
 				.catch(error => {
@@ -207,6 +201,8 @@ export default {
 					console.log(error)
 				})
 		},
+
+		// Load roles
 		loadRoles() {
 			restApi
 				.get('/roles')
@@ -215,6 +211,92 @@ export default {
 				})
 				.catch(error => {
 					console.log(error)
+				})
+		},
+
+		// Load all permissions
+		loadPermissions() {
+			// Get all permisions from API
+			restApi
+				.get('/permissions')
+				.then(({ data }) => {
+					console.log(data)
+					this.allPermissions = data
+				})
+				.catch(error => {
+					console.log(error)
+				})
+		},
+
+		// Get all permisions for role
+		getRolePermissions(roleId) {
+			let rolePermissions = []
+			if (roleId) {
+				this.roles
+					.find(role => role.id === roleId)
+					.permissions.forEach(permission => {
+						rolePermissions.push(permission.name)
+					})
+			}
+			return rolePermissions
+		},
+
+		// Update permissions table based on role
+		updatePermissions() {
+			if (this.user.role_id) {
+				let rolePerms = this.getRolePermissions(this.user.role_id)
+				this.resetPermissions()
+				rolePerms.forEach(perm => {
+					this.permissions[perm] = true
+				})
+				this.customPermissins = false
+			} else {
+				this.resetPermissions()
+				this.customPermissins = true
+			}
+		},
+
+		// Reset permissions table
+		resetPermissions() {
+			this.allPermissions.forEach(perm => {
+				this.permissions[perm] = false
+			})
+		},
+
+		permissionsCheck() {
+			let userPermissionsArray = []
+			let allperms = Object.entries(this.user.permissions).map(([key, value]) => ({ [key]: value }))
+
+			allperms.forEach(perm => {
+				if (perm) {
+					userPermissionsArray.push(perm)
+				}
+			})
+		},
+
+		// Update user permissions in database
+		updateUserPermissions() {
+			let data = {
+				role_id: this.user.role_id,
+				permissions: this.user.permissions,
+			}
+
+			restApi
+				.put('user/' + this.$route.params.id, data)
+				.then(({ data }) => {
+					this.user = data
+					this.$swal.fire({
+						icon: 'success',
+						title: 'User successfully updated',
+					})
+				})
+				.catch(error => {
+					console.log(error)
+
+					this.$swal.fire({
+						icon: 'error',
+						title: error.response.data.message,
+					})
 				})
 		},
 	},

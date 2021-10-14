@@ -10,7 +10,7 @@
 		<div class="row p-0">
 			<div class="col-xl-3 col-lg-4 col-md-4 order-1 order-md-0">
 				<ul class="nav nav-pills mb-2 flex-column nav-left">
-					<li class="nav-item" v-if="authUser.permissions.includes('settings-general-access')">
+					<li class="nav-item" v-if="authUser.permissions.includes('SETTINGS_GENERAL_ACCESS')">
 						<router-link
 							class="nav-link"
 							:class="this.$route.name === 'settingsGeneral' ? 'active' : ''"
@@ -20,7 +20,7 @@
 							<font-awesome-icon :icon="['fas', 'cogs']" class="me-2" /> General
 						</router-link>
 					</li>
-					<li class="nav-item" v-if="authUser.permissions.includes('role-access')">
+					<li class="nav-item" v-if="authUser.permissions.includes('ROLE_ACCESS')">
 						<router-link
 							class="nav-link"
 							:class="this.$route.name === 'settingsRoles' ? 'active' : ''"

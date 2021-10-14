@@ -62,7 +62,7 @@
 								</li>
 							</ul>
 							<button
-								v-if="authUser.permissions.includes('user-delete')"
+								v-if="authUser.permissions.includes('USER_DELETE')"
 								class="btn btn-danger float-end w-100"
 								@click="confirmDelete(user)"
 							>
