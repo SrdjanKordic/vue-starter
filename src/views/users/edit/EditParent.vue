@@ -105,7 +105,7 @@
 							<font-awesome-icon :icon="['fas', 'clock']" /> Timeline
 						</router-link>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" v-if="authUser.permissions.includes('ROLE_ACCESS')">
 						<router-link
 							class="nav-link"
 							:class="this.$route.name === 'userPermissions' ? 'active' : ''"

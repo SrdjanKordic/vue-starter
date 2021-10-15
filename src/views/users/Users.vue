@@ -26,7 +26,8 @@
 										<td>{{ user.id }}</td>
 										<td>{{ user.name }}</td>
 										<td>{{ user.email }}</td>
-										<td>{{ user.role.name }}</td>
+										<td v-if="user.role">{{ user.role.name }}</td>
+										<td v-else>Custom</td>
 										<td><span class="badge bg-success"> active </span></td>
 									</tr>
 								</template>

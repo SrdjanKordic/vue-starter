@@ -20,8 +20,8 @@
 				</div>
 			</div>
 
-			<div class="table-responsive mt-3">
-				<p class="mb-0" v-if="customPermissins">Chose permissions for user</p>
+			<div v-if="!permissionsTableLoader" class="table-responsive mt-3">
+				<p class="mb-0" v-if="useCustomPermissions">Chose permissions for user</p>
 				<table role="table" aria-busy="false" aria-colcount="5" class="table b-table table-striped">
 					<thead role="rowgroup" class="">
 						<tr role="row" class="">
@@ -38,18 +38,17 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.USER_ACCESS"
 										type="checkbox"
-										@click="permissionsCheck()"
 									/>
 								</div>
 							</td>
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.USER_CREATE"
 										type="checkbox"
@@ -59,7 +58,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.USER_UPDATE"
 										type="checkbox"
@@ -69,7 +68,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.USER_DELETE"
 										type="checkbox"
@@ -82,7 +81,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.ROLE_ACCESS"
 										type="checkbox"
@@ -92,7 +91,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.ROLE_CREATE"
 										type="checkbox"
@@ -102,7 +101,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.ROLE_UPDATE"
 										type="checkbox"
@@ -112,7 +111,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.ROLE_DELETE"
 										type="checkbox"
@@ -125,7 +124,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.SETTINGS_GENERAL_ACCESS"
 										type="checkbox"
@@ -135,7 +134,7 @@
 							<td>
 								<div class="form-check form-switch">
 									<input
-										:disabled="!customPermissins"
+										:disabled="!useCustomPermissions"
 										class="form-check-input"
 										v-model="permissions.SETTINGS_GENERAL_UPDATE"
 										type="checkbox"
@@ -148,7 +147,16 @@
 					</tbody>
 				</table>
 			</div>
-			<button v-if="authUser.permissions.includes('USER_UPDATE')" class="btn btn-primary float-end">
+			<div v-else class="text-center mt-5">
+				<div class="spinner-border text-primary spinner-border-sm" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+			<button
+				v-if="authUser.permissions.includes('USER_UPDATE')"
+				@click="updateUserPermissions()"
+				class="btn btn-primary float-end"
+			>
 				Update
 			</button>
 		</div>
@@ -170,20 +178,27 @@ export default {
 			user: {},
 			loading: false,
 			roles: [],
-			customPermissins: false,
+			useCustomPermissions: false,
 			allPermissions: {},
 			permissions: {},
+			permissionsTableLoader: false,
+			customPermissions: [],
+			choosenPermissions: '',
 		}
 	},
 	computed: {
 		...mapState(['authUser']),
 	},
+
 	created() {
 		this.loadUser()
-		this.loadRoles()
 		this.loadPermissions()
 	},
-	updated() {},
+	updated() {
+		if (!this.authUser.permissions.includes('ROLE_ACCESS')) {
+			this.$router.push('/')
+		}
+	},
 	methods: {
 		// Load user
 		loadUser() {
@@ -192,9 +207,9 @@ export default {
 				.get('user/' + this.$route.params.id)
 				.then(({ data }) => {
 					this.user = data
-					this.customPermissins = this.user.permissions ? true : false
-					this.updatePermissions()
+					this.useCustomPermissions = this.user.permissions ? true : false
 					this.loading = false
+					this.loadRoles()
 				})
 				.catch(error => {
 					this.loading = false
@@ -208,20 +223,25 @@ export default {
 				.get('/roles')
 				.then(({ data }) => {
 					this.roles = data
+					this.updatePermissions()
 				})
 				.catch(error => {
 					console.log(error)
 				})
 		},
 
-		// Load all permissions
+		// Load all permissions and store them
 		loadPermissions() {
+			this.permissions = {
+				USER_ACCESS: true,
+			}
+			this.permissionsTableLoader = true
 			// Get all permisions from API
 			restApi
 				.get('/permissions')
 				.then(({ data }) => {
-					console.log(data)
 					this.allPermissions = data
+					this.permissionsTableLoader = false
 				})
 				.catch(error => {
 					console.log(error)
@@ -249,11 +269,36 @@ export default {
 				rolePerms.forEach(perm => {
 					this.permissions[perm] = true
 				})
-				this.customPermissins = false
+				this.useCustomPermissions = false
+				this.permissionsTableLoader = false
 			} else {
 				this.resetPermissions()
-				this.customPermissins = true
+				this.useCustomPermissions = true
+				this.getCustomPermissions().then(data => {
+					data.forEach(perm => {
+						this.permissions[perm] = true
+					})
+				})
 			}
+		},
+
+		// Get customer permissions
+		getCustomPermissions() {
+			return new Promise((resolve, reject) => {
+				this.permissionsTableLoader = true
+				// Get custom permissions if already have in database
+				restApi
+					.post('/permissions/names', { ids: this.user.permissions })
+					.then(({ data }) => {
+						resolve(data)
+						this.permissionsTableLoader = false
+					})
+					.catch(error => {
+						reject(error)
+						console.log(error)
+						this.permissionsTableLoader = false
+					})
+			})
 		},
 
 		// Reset permissions table
@@ -263,40 +308,56 @@ export default {
 			})
 		},
 
-		permissionsCheck() {
-			let userPermissionsArray = []
-			let allperms = Object.entries(this.user.permissions).map(([key, value]) => ({ [key]: value }))
-
-			allperms.forEach(perm => {
-				if (perm) {
-					userPermissionsArray.push(perm)
+		// Data in permission column in user table is stored with id, we get IDs based on permission names here
+		applyCustomPermissions() {
+			return new Promise((resolve, reject) => {
+				this.customPermissions = []
+				for (const property in this.permissions) {
+					if (this.permissions[property]) {
+						this.customPermissions.push(property)
+					}
 				}
+
+				restApi
+					.post('/permissions/ids', { names: JSON.stringify(this.customPermissions) })
+					.then(({ data }) => {
+						this.choosenPermissions = data.join()
+						resolve()
+					})
+					.catch(error => {
+						console.log(error)
+						reject(error)
+					})
 			})
 		},
 
 		// Update user permissions in database
 		updateUserPermissions() {
-			let data = {
-				role_id: this.user.role_id,
-				permissions: this.user.permissions,
-			}
-
-			restApi
-				.put('user/' + this.$route.params.id, data)
-				.then(({ data }) => {
-					this.user = data
-					this.$swal.fire({
-						icon: 'success',
-						title: 'User successfully updated',
-					})
+			this.applyCustomPermissions()
+				.then(() => {
+					let data = {
+						...this.user,
+						permissions: this.user.role_id ? null : this.choosenPermissions,
+					}
+					restApi
+						.put('user/' + this.$route.params.id, data)
+						.then(({ data }) => {
+							this.user = data
+							this.$swal.fire({
+								icon: 'success',
+								title: 'User permissions successfully updated',
+							})
+						})
+						.catch(error => {
+							console.log(error)
+							this.$swal.fire({
+								icon: 'error',
+								title: error.response.data.message,
+							})
+						})
 				})
 				.catch(error => {
 					console.log(error)
-
-					this.$swal.fire({
-						icon: 'error',
-						title: error.response.data.message,
-					})
 				})
 		},
 	},
