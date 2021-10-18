@@ -131,10 +131,6 @@ export default new Vuex.Store({
 					.put(`user/${state.authUser.id}`, account)
 					.then(resp => {
 						commit('SET_ACCOUNT', resp.data)
-						this.$swal.fire({
-							icon: 'success',
-							title: 'Account info is updated',
-						})
 						resolve(resp)
 					})
 					.catch(error => {

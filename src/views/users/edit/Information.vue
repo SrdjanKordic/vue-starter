@@ -131,10 +131,6 @@ export default {
 				.put('user/' + this.$route.params.id, data)
 				.then(({ data }) => {
 					this.user = data
-					this.$swal.fire({
-						icon: 'success',
-						title: 'User successfully updated',
-					})
 				})
 				.catch(error => {
 					console.log(error)

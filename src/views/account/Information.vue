@@ -88,8 +88,17 @@ export default {
 				.dispatch('accountUpdate', data)
 				.then(() => {
 					this.loading = false
+					this.$swal.fire({
+						icon: 'success',
+						title: 'User successfully updated',
+					})
 				})
-				.catch(() => {})
+				.catch(error => {
+					this.$swal.fire({
+						icon: 'error',
+						title: error,
+					})
+				})
 		},
 	},
 }
