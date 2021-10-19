@@ -7,12 +7,7 @@
 			<input type="text" class="form-control w-75" placeholder="🔍  Search..." />
 			<div v-if="isAuth" class="dropdown w-auto">
 				<div role="button" id="account" data-bs-toggle="dropdown" aria-expanded="false">
-					<img
-						:src="authUser.avatar ? authUser.avatar : 'https://picsum.photos/64/64'"
-						width="32"
-						height="32"
-						class="rounded-circle shadow"
-					/>
+					<Avatar class="shadow" :user="account" />
 					<span class="d-none d-sm-inline-block ms-2 me-2">{{ authUser.name }}</span>
 				</div>
 
@@ -33,8 +28,12 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import Avatar from '../user/Avatar.vue'
 export default {
 	name: 'Header',
+	components: {
+		Avatar,
+	},
 	data() {
 		return {
 			loading: false,
@@ -42,7 +41,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['token', 'authUser']),
+		...mapState(['token', 'authUser', 'account']),
 		...mapGetters(['isAuth']),
 	},
 	methods: {

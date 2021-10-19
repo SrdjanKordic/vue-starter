@@ -33,7 +33,7 @@
 								<template v-for="user in users">
 									<tr :key="user.id" @click="viewUser(user)" role="button">
 										<td>{{ user.id }}</td>
-										<td>{{ user.name }}</td>
+										<td><Avatar :user="user" class="me-1" /> {{ user.name }}</td>
 										<td>{{ user.email }}</td>
 										<td v-if="user.role">{{ user.role.name }}</td>
 										<td v-else>Custom</td>
@@ -132,9 +132,10 @@ import PageHeader from '@/components/layout/PageHeader'
 import { mapState } from 'vuex'
 import restApi from '../../api/index.js'
 import { Modal } from 'bootstrap'
+import Avatar from '@/components/user/Avatar'
 export default {
 	name: 'Users',
-	components: { PageHeader },
+	components: { PageHeader, Avatar },
 	data() {
 		return {
 			users: [],

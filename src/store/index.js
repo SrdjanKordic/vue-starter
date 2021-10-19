@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import restApi from '../api/index'
 import { decode } from 'jsonwebtoken'
 import router from '../router'
+import config from '../../config'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
 		authUser: decode(localStorage.getItem('auth-token')) || null,
 		account: null,
 		menuOpen: false,
+		storageUrl: config.storageUrl,
 	},
 	getters: {
 		isAuth(state) {

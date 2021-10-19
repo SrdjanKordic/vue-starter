@@ -19,8 +19,8 @@ let restAPI = axios.create({
 })
 
 restAPI.interceptors.request.use(request => {
-	request.headers.common['Accept'] = 'application/json'
-	request.headers.common['Content-type'] = 'application/json'
+	//request.headers.common['Accept'] = 'application/json'
+	//request.headers.common['Content-type'] = 'application/json'
 	if (store.state.token) {
 		request.headers['Authorization'] = `Bearer ${store.state.token}`
 	}

@@ -10,27 +10,16 @@
 			}"
 		/>
 
-		<div class="row">
+		<div v-if="!loading" class="row">
 			<div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
 				<!-- User Card -->
 				<div class="card">
 					<div class="card-body">
 						<div class="user-avatar-section">
 							<div class="d-flex align-items-center flex-column">
-								<img
-									class="img-fluid rounded rounded-circle mt-3 mb-2"
-									src="https://picsum.photos/110/110"
-									height="128"
-									width="128"
-									:alt="user.name"
-								/>
+								<Avatar :user="user" :size="128" class="mt-3 mb-2" />
 								<div class="user-info text-center">
-									<h4 v-if="!loading">{{ user.name }}</h4>
-									<h4 v-else>
-										<div class="spinner-grow" role="status" style="width:15px;height:15px">
-											<span class="visually-hidden">Loading...</span>
-										</div>
-									</h4>
+									<h4>{{ user.name }}</h4>
 									<span class="badge badge-light-primary">Author</span>
 								</div>
 							</div>
@@ -41,12 +30,7 @@
 							<ul class="list-unstyled">
 								<li class="mb-2">
 									<span class="fw-bolder me-2">Email:</span>
-									<span v-if="!loading">{{ user.email }}</span>
-									<span v-else>
-										<div class="spinner-grow" role="status" style="width:15px;height:15px">
-											<span class="visually-hidden">Loading...</span>
-										</div>
-									</span>
+									<span>{{ user.email }}</span>
 								</li>
 								<li class="mb-2">
 									<span class="fw-bolder me-2">Status:</span>
@@ -119,6 +103,11 @@
 				<router-view></router-view>
 			</div>
 		</div>
+		<div v-else class="text-center">
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -126,9 +115,10 @@
 import restApi from '../../../api'
 import { mapState } from 'vuex'
 import PageHeader from '../../../components/layout/PageHeader.vue'
+import Avatar from '@/components/user/Avatar'
 export default {
 	name: 'EditParent',
-	components: { PageHeader },
+	components: { PageHeader, Avatar },
 	data() {
 		return {
 			user: {},
