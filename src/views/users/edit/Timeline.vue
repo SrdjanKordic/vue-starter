@@ -153,6 +153,7 @@
 <script>
 import restApi from '../../../api'
 import { mapState } from 'vuex'
+import { handleErrors } from '../../../actions/helpers'
 export default {
 	name: 'Timeline',
 	data() {
@@ -178,7 +179,11 @@ export default {
 				})
 				.catch(error => {
 					this.loading = false
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 				})
 		},
 	},

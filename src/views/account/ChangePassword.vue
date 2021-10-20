@@ -55,23 +55,16 @@
 
 <script>
 import restApi from '../../api'
-import { mapState } from 'vuex'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'ChangePassword',
 	data() {
 		return {
-			user: {},
 			current_password: '',
 			new_password: '',
 			new_confirm_password: '',
 			loading: false,
 		}
-	},
-	computed: {
-		...mapState(['authUser']),
-	},
-	created() {
-		this.user = this.authUser
 	},
 	methods: {
 		changePassword() {
@@ -91,37 +84,12 @@ export default {
 					})
 				})
 				.catch(error => {
-					let errorMsg = this.handleValidationErrors(error)
-					if (errorMsg != '') {
-						this.$swal.fire({
-							icon: 'error',
-							title: errorMsg,
-							timer: 6000,
-						})
-					} else {
-						this.$swal.fire({
-							icon: 'error',
-							title: error,
-							timer: 6000,
-						})
-					}
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, 'changePassword'),
+						timer: 6000,
+					})
 				})
-		},
-		handleValidationErrors(error) {
-			let errorMessage = ''
-			if (error.response.data.errors) {
-				let validationErrors = error.response.data.errors
-				if (validationErrors.current_password) {
-					errorMessage += ' ' + validationErrors.current_password
-				}
-				if (validationErrors.new_confirm_password) {
-					errorMessage += ' ' + validationErrors.new_confirm_password
-				}
-				if (validationErrors.new_password) {
-					errorMessage += ' ' + validationErrors.new_password
-				}
-			}
-			return errorMessage
 		},
 	},
 }

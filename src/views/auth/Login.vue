@@ -4,9 +4,6 @@
 			<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
 				<h3 class="mb-3 text-center">👋 Login to system</h3>
 				<p class="mb-3 text-center">Logged users have some privilages 🤷‍♂️</p>
-				<div v-if="error" class="alert alert-danger" role="alert">
-					{{ error }}
-				</div>
 				<div class="card">
 					<div class="card-body">
 						<form @submit.prevent="login">
@@ -61,6 +58,7 @@
 	</div>
 </template>
 <script>
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Login',
 	data() {
@@ -70,7 +68,6 @@ export default {
 				password: null,
 			},
 			loading: false,
-			error: null,
 		}
 	},
 	mounted() {
@@ -101,9 +98,7 @@ export default {
 
 		// Function to authenticate user with email and password
 		async login() {
-			this.error = null
 			this.loading = true
-
 			await this.$store
 				.dispatch('authLogin', this.user)
 				.then(({ data }) => {
@@ -113,34 +108,28 @@ export default {
 					this.loading = false
 				})
 				.catch(error => {
-					this.error = error.response ? error.response.data.message : error.message
-					if (this.error === undefined) {
-						this.error = ''
-						if (error.response.data.error.password) {
-							error.response.data.error.password.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-						if (error.response.data.error.email) {
-							error.response.data.error.email.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-					}
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, 'login'),
+						timer: 6000,
+					})
 					this.loading = false
 				})
 		},
 
 		// Authenticate with Github Account
 		async githubLogin() {
-			this.error = null
 			const newWindow = openWindow('', 'Login')
 
 			try {
 				const url = await this.$store.dispatch('authLoginSocialite', 'github', this.user)
 				newWindow.location.href = url
 			} catch (error) {
-				this.error = error
+				this.$swal.fire({
+					icon: 'error',
+					title: handleErrors(error, 'login'),
+					timer: 6000,
+				})
 			} finally {
 				this.loading = false
 			}
@@ -148,28 +137,34 @@ export default {
 
 		// Authenticate with Google Account
 		async googleLogin() {
-			this.error = null
 			const newWindow = openWindow('', 'Login')
 
 			try {
 				const url = await this.$store.dispatch('authLoginSocialite', 'google', this.user)
 				newWindow.location.href = url
 			} catch (error) {
-				this.error = error
+				this.$swal.fire({
+					icon: 'error',
+					title: handleErrors(error, 'login'),
+					timer: 6000,
+				})
 			} finally {
 				this.loading = false
 			}
 		},
 
 		async facebookLogin() {
-			this.error = null
 			const newWindow = openWindow('', 'Login')
 
 			try {
 				const url = await this.$store.dispatch('authLoginSocialite', 'facebook', this.user)
 				newWindow.location.href = url
 			} catch (error) {
-				this.error = error
+				this.$swal.fire({
+					icon: 'error',
+					title: handleErrors(error, 'login'),
+					timer: 6000,
+				})
 			} finally {
 				this.loading = false
 			}

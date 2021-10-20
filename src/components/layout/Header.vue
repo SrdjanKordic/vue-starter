@@ -29,6 +29,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import Avatar from '../user/Avatar.vue'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Header',
 	components: {
@@ -37,7 +38,6 @@ export default {
 	data() {
 		return {
 			loading: false,
-			error: null,
 		}
 	},
 	computed: {
@@ -52,7 +52,11 @@ export default {
 				await this.$store.dispatch('authLogout', this.token)
 				await this.$router.push({ name: 'login' })
 			} catch (error) {
-				this.error = error
+				this.$swal.fire({
+					icon: 'error',
+					title: handleErrors(error, ''),
+					timer: 6000,
+				})
 			} finally {
 				this.loading = false
 			}

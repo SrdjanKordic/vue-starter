@@ -1,5 +1,5 @@
 import Home from '../views/Home.vue'
-import SecondPage from '../views/SecondPage.vue'
+import EmptyPage from '../views/EmptyPage.vue'
 import UIKit from '../views/UIKit.vue'
 import Users from '../views/users/UsersParent.vue'
 import Login from '../views/auth/Login.vue'
@@ -43,8 +43,8 @@ export default [
 		beforeEnter: middleware.user,
 	},
 	{
-		path: '/second-page',
-		component: SecondPage,
+		path: '/empty-page',
+		component: EmptyPage,
 	},
 	{
 		path: '/ui-kit',

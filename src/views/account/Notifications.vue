@@ -39,15 +39,11 @@ export default {
 	name: 'Notifications',
 	data() {
 		return {
-			user: {},
 			loading: false,
 		}
 	},
 	computed: {
-		...mapState(['authUser']),
-	},
-	created() {
-		this.user = this.authUser
+		...mapState(['account']),
 	},
 	methods: {},
 }

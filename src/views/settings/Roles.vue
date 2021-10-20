@@ -133,6 +133,7 @@ import Multiselect from 'vue-multiselect'
 import { mapState } from 'vuex'
 import restApi from '../../api'
 import { Modal } from 'bootstrap'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Roles',
 	components: { Multiselect },
@@ -197,10 +198,10 @@ export default {
 					})
 				})
 				.catch(error => {
-					console.log(error)
 					this.$swal.fire({
 						icon: 'error',
-						title: error.response.data.message,
+						title: handleErrors(error, 'roleStore'),
+						timer: 6000,
 					})
 				})
 		},
@@ -217,10 +218,10 @@ export default {
 					})
 				})
 				.catch(error => {
-					console.log(error)
 					this.$swal.fire({
 						icon: 'error',
-						title: error.response.data.message,
+						title: handleErrors(error, 'roleStore'),
+						timer: 6000,
 					})
 				})
 		},
@@ -238,7 +239,11 @@ export default {
 					this.optionsPermissions = data
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 				})
 		},
 	},

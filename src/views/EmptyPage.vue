@@ -2,16 +2,13 @@
 	<div>
 		<PageHeader
 			:data="{
-				name: 'Second Page',
+				name: 'Empty Page',
 				breadcrumbs: [{ name: 'Home', to: '/' }],
 			}"
 		/>
 
 		<div class="row">
-			<div class="col-12">
-				This is a second page <br />
-				{{ name }}
-			</div>
+			<div class="col-12">This is a demo of an empty page<br /></div>
 		</div>
 	</div>
 </template>
@@ -23,7 +20,7 @@ export default {
 	components: { PageHeader },
 	data() {
 		return {
-			name: 'Srdjan Kordic',
+			name: '',
 		}
 	},
 }

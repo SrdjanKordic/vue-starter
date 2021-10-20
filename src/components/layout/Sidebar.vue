@@ -12,8 +12,9 @@
 			}"
 			@click="$store.commit('TOGGLE_MENU')"
 		>
-			<div class="logo mb-3">
-				<img src="https://picsum.photos/160/80" alt="" class="w-100 rounded" />
+			<div class="logo mb-3 text-center">
+				<span class="text-muted">Let's amaze the world</span>
+				<img src="https://www.freeiconspng.com/uploads/3d-world-map-png-2.png" alt="" class="w-100 rounded" />
 			</div>
 			<ul class="list-unstyled mb-0 py-3 pt-md-1">
 				<li class="mb-2">
@@ -22,8 +23,8 @@
 					</router-link>
 				</li>
 				<li class="mb-2">
-					<router-link class="btn text-start px-3" to="/second-page">
-						<font-awesome-icon :icon="['fas', 'paperclip']" class="me-1" /> Second page
+					<router-link class="btn text-start px-3" to="/empty-page">
+						<font-awesome-icon :icon="['fas', 'paperclip']" class="me-1" /> Empty Page
 					</router-link>
 				</li>
 				<li class="mb-2"><div class="text-warning">Development</div></li>

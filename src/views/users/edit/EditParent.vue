@@ -11,8 +11,8 @@
 		/>
 
 		<div v-if="!loading" class="row">
+			<!-- User Card -->
 			<div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
-				<!-- User Card -->
 				<div class="card">
 					<div class="card-body">
 						<div class="user-avatar-section">
@@ -55,9 +55,10 @@
 						</div>
 					</div>
 				</div>
-				<!-- /User Card -->
 			</div>
+			<!-- #User Card -->
 			<div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+				<!-- User navigation -->
 				<ul class="nav nav-pills mb-2">
 					<li class="nav-item">
 						<router-link
@@ -100,7 +101,8 @@
 						</router-link>
 					</li>
 				</ul>
-				<router-view></router-view>
+				<!-- #User navigation -->
+				<router-view :person="user"></router-view>
 			</div>
 		</div>
 		<div v-else class="text-center">
@@ -116,6 +118,7 @@ import restApi from '../../../api'
 import { mapState } from 'vuex'
 import PageHeader from '../../../components/layout/PageHeader.vue'
 import Avatar from '@/components/user/Avatar'
+import { handleErrors } from '../../../actions/helpers'
 export default {
 	name: 'EditParent',
 	components: { PageHeader, Avatar },
@@ -123,6 +126,7 @@ export default {
 		return {
 			user: {},
 			loading: false,
+			permissions: {},
 		}
 	},
 	computed: {
@@ -131,7 +135,6 @@ export default {
 	created() {
 		this.loadUser()
 	},
-	updated() {},
 	methods: {
 		loadUser() {
 			this.loading = true
@@ -142,7 +145,11 @@ export default {
 					this.loading = false
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 					this.loading = false
 				})
 		},
@@ -180,10 +187,10 @@ export default {
 									this.$router.push('/users')
 								})
 								.catch(error => {
-									console.log(error)
 									this.$swal.fire({
 										icon: 'error',
-										title: error,
+										title: handleErrors(error, ''),
+										timer: 6000,
 									})
 								})
 						}

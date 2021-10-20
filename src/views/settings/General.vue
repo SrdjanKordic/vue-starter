@@ -21,7 +21,6 @@ export default {
 	name: 'General',
 	data() {
 		return {
-			error: '',
 			settings: {},
 		}
 	},

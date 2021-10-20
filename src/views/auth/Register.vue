@@ -4,9 +4,6 @@
 			<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
 				<h3 class="mb-3 text-center">👋 Register</h3>
 				<p class="mb-3 text-center">Registered users have more power 🤷‍♂️</p>
-				<div v-if="error" class="alert alert-danger" role="alert">
-					{{ error }}
-				</div>
 				<div class="card">
 					<div class="card-body">
 						<form v-if="!info" @submit.prevent="register">
@@ -76,6 +73,7 @@
 </template>
 <script>
 import restApi from '../../api'
+import { handleErrors } from '../../actions/helpers.js'
 export default {
 	name: 'Register',
 	data() {
@@ -87,58 +85,27 @@ export default {
 				password_confirmation: '',
 			},
 			loading: false,
-			error: '',
 			info: '',
 		}
 	},
 	methods: {
 		// Function to register user on system
 		async register() {
-			this.error = null
 			this.loading = true
-			restApi.post(`/register`, this.user).then(
-				({ data }) => {
-					this.error = ''
-					if (data.error) {
-						if (data.error.password) {
-							data.error.password.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-						if (data.error.email) {
-							data.error.email.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-						if (data.error.name) {
-							data.error.name.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-					}
-
+			restApi
+				.post(`/register`, this.user)
+				.then(({ data }) => {
 					this.info = data.message
 					this.loading = false
-				},
-				error => {
-					this.info = ''
-					this.error = error.response ? error.response.data.message : error.message
-					if (this.error === undefined) {
-						this.error = null
-						if (error.password) {
-							error.password.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-						if (error.email) {
-							error.email.forEach(er => {
-								this.error += er + ' '
-							})
-						}
-					}
+				})
+				.catch(error => {
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, 'register'),
+						timer: 6000,
+					})
 					this.loading = false
-				}
-			)
+				})
 		},
 	},
 }

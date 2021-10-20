@@ -45,6 +45,7 @@
 <script>
 //import restApi from "../api/index.js";
 import { mapState } from 'vuex'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Social',
 	data() {
@@ -53,7 +54,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['authUser', 'account']),
+		...mapState(['account']),
 	},
 	created() {},
 	methods: {
@@ -80,7 +81,8 @@ export default {
 				.catch(error => {
 					this.$swal.fire({
 						icon: 'error',
-						title: error,
+						title: handleErrors(error, 'userUpdate'),
+						timer: 6000,
 					})
 				})
 		},

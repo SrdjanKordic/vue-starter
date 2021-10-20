@@ -58,6 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Information',
 	data() {
@@ -66,10 +67,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['authUser', 'account']),
-	},
-	created() {
-		this.user = this.authUser
+		...mapState(['account']),
 	},
 	methods: {
 		update() {
@@ -96,7 +94,8 @@ export default {
 				.catch(error => {
 					this.$swal.fire({
 						icon: 'error',
-						title: error,
+						title: handleErrors(error, 'userUpdate'),
+						timer: 6000,
 					})
 				})
 		},

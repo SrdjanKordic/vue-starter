@@ -171,11 +171,13 @@
 <script>
 import restApi from '../../../api'
 import { mapState } from 'vuex'
+import { handleErrors } from '../../../actions/helpers'
 export default {
 	name: 'Permissions',
+	props: ['person'],
 	data() {
 		return {
-			user: {},
+			user: this.person,
 			loading: false,
 			roles: [],
 			useCustomPermissions: false,
@@ -191,8 +193,10 @@ export default {
 	},
 
 	created() {
-		this.loadUser()
 		this.loadPermissions()
+		this.useCustomPermissions = this.user.permissions ? true : false
+		this.loading = false
+		this.loadRoles()
 	},
 	updated() {
 		if (!this.authUser.permissions.includes('ROLE_ACCESS')) {
@@ -200,23 +204,6 @@ export default {
 		}
 	},
 	methods: {
-		// Load user
-		loadUser() {
-			this.loading = true
-			restApi
-				.get('user/' + this.$route.params.id)
-				.then(({ data }) => {
-					this.user = data
-					this.useCustomPermissions = this.user.permissions ? true : false
-					this.loading = false
-					this.loadRoles()
-				})
-				.catch(error => {
-					this.loading = false
-					console.log(error)
-				})
-		},
-
 		// Load roles
 		loadRoles() {
 			restApi
@@ -226,7 +213,11 @@ export default {
 					this.updatePermissions()
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 				})
 		},
 
@@ -244,7 +235,11 @@ export default {
 					this.permissionsTableLoader = false
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 				})
 		},
 
@@ -295,7 +290,6 @@ export default {
 					})
 					.catch(error => {
 						reject(error)
-						console.log(error)
 						this.permissionsTableLoader = false
 					})
 			})
@@ -325,7 +319,6 @@ export default {
 						resolve()
 					})
 					.catch(error => {
-						console.log(error)
 						reject(error)
 					})
 			})
@@ -349,15 +342,19 @@ export default {
 							})
 						})
 						.catch(error => {
-							console.log(error)
 							this.$swal.fire({
 								icon: 'error',
-								title: error.response.data.message,
+								title: handleErrors(error, 'userPermissions'),
+								timer: 6000,
 							})
 						})
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 				})
 		},
 	},

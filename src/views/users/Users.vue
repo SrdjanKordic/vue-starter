@@ -22,9 +22,8 @@
 						<table v-if="!loading" class="table table-hover">
 							<thead>
 								<tr class="rounded">
-									<th>id</th>
 									<th>Name</th>
-									<th>Email</th>
+									<th>Phone</th>
 									<th>Role</th>
 									<th>Status</th>
 								</tr>
@@ -32,12 +31,27 @@
 							<tbody>
 								<template v-for="user in users">
 									<tr :key="user.id" @click="viewUser(user)" role="button">
-										<td>{{ user.id }}</td>
-										<td><Avatar :user="user" class="me-1" /> {{ user.name }}</td>
-										<td>{{ user.email }}</td>
-										<td v-if="user.role">{{ user.role.name }}</td>
-										<td v-else>Custom</td>
-										<td><span class="badge bg-success"> active </span></td>
+										<td>
+											<div class="d-flex align-items-center">
+												<div class="avatar me-2">
+													<Avatar :user="user" :size="36" class="me-1" />
+												</div>
+												<div class="info d-flex flex-column">
+													<span class="fw-bold">{{ user.name }}</span>
+													<small class="text-muted">{{ user.email }}</small>
+												</div>
+											</div>
+										</td>
+										<td class="align-middle">
+											{{ user.phone }}
+										</td>
+										<td v-if="user.role" class="align-middle">
+											{{ user.role.name }}
+										</td>
+										<td v-else class="align-middle">Custom</td>
+										<td class="align-middle">
+											<span class="badge bg-success shadow-sm"> active </span>
+										</td>
 									</tr>
 								</template>
 							</tbody>
@@ -57,7 +71,7 @@
 			</div>
 		</div>
 
-		<!-- Modal -->
+		<!-- Modal for creating user -->
 		<div
 			v-if="authUser.permissions.includes('USER_CREATE')"
 			class="modal fade"
@@ -124,6 +138,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- #Modal for creating user -->
 	</div>
 </template>
 
@@ -133,6 +148,7 @@ import { mapState } from 'vuex'
 import restApi from '../../api/index.js'
 import { Modal } from 'bootstrap'
 import Avatar from '@/components/user/Avatar'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'Users',
 	components: { PageHeader, Avatar },
@@ -155,24 +171,29 @@ export default {
 		this.$createUserModal = new Modal('#createUser')
 	},
 	methods: {
+		// Get all users from DB
 		getUsers() {
 			this.loading = true
-			restApi.get(`/users`).then(
-				({ data }) => {
+			restApi
+				.get(`/users`)
+				.then(({ data }) => {
 					this.users = data
 					this.loading = false
-				},
-				error => {
-					console.log(error)
-					this.error = error.response.data.message
-				}
-			)
+				})
+				.catch(error => {
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
+				})
 		},
+		// Create new user
 		createUser() {
 			console.log('ovde')
-			restApi.post(`/register`, this.newUser).then(
-				({ data }) => {
-					console.log(data)
+			restApi
+				.post(`/register`, this.newUser)
+				.then(() => {
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User created successfully!',
@@ -181,44 +202,18 @@ export default {
 					this.newUser = {}
 					this.getUsers()
 					this.$createUserModal.hide()
-				},
-				error => {
-					console.log(error.response.data)
-					let errorMsg = this.handleValidationErrors(error)
-					if (errorMsg != '') {
-						this.$swal.fire({
-							icon: 'error',
-							title: errorMsg,
-							timer: 6000,
-						})
-					} else {
-						this.$swal.fire({
-							icon: 'error',
-							title: error,
-							timer: 6000,
-						})
-					}
-				}
-			)
+				})
+				.catch(error => {
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, 'userCreate'),
+						timer: 6000,
+					})
+				})
 		},
+		// Go to user page
 		viewUser(user) {
 			this.$router.push('/users/' + user.id)
-		},
-		handleValidationErrors(error) {
-			let errorMessage = ''
-			if (error.response.data.error) {
-				let validationErrors = error.response.data.error
-				if (validationErrors.password) {
-					errorMessage += ' ' + validationErrors.password
-				}
-				if (validationErrors.email) {
-					errorMessage += ' ' + validationErrors.email
-				}
-				if (validationErrors.name) {
-					errorMessage += ' ' + validationErrors.name
-				}
-			}
-			return errorMessage
 		},
 	},
 }

@@ -80,14 +80,17 @@
 <script>
 import restApi from '../../../api'
 import { mapState } from 'vuex'
+import { handleErrors } from '../../../actions/helpers'
 export default {
 	name: 'Information',
+	props: ['person'],
 	data() {
 		return {
-			user: {},
 			loading: false,
+			user: this.person,
 		}
 	},
+
 	computed: {
 		...mapState(['authUser']),
 		readonly() {
@@ -98,23 +101,7 @@ export default {
 			}
 		},
 	},
-	created() {
-		this.loadUser()
-	},
 	methods: {
-		loadUser() {
-			this.loading = true
-			restApi
-				.get('user/' + this.$route.params.id)
-				.then(({ data }) => {
-					this.user = data
-					this.loading = false
-				})
-				.catch(error => {
-					console.log(error)
-					this.loading = false
-				})
-		},
 		updateUser() {
 			let data = {
 				name: this.user.name,
@@ -131,13 +118,17 @@ export default {
 				.put('user/' + this.$route.params.id, data)
 				.then(({ data }) => {
 					this.user = data
+					this.$swal.fire({
+						icon: 'success',
+						title: 'User successfully updated!',
+						timer: 4000,
+					})
 				})
 				.catch(error => {
-					console.log(error)
-
 					this.$swal.fire({
 						icon: 'error',
-						title: error.response.data.message,
+						title: handleErrors(error, 'userUpdate'),
+						timer: 6000,
 					})
 				})
 		},

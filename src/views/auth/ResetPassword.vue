@@ -45,12 +45,12 @@
 </template>
 <script>
 import restApi from '../../api'
+import { handleErrors } from '../../actions/helpers'
 export default {
 	name: 'ResetPassword',
 	data() {
 		return {
 			info: '',
-			error: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
@@ -74,13 +74,16 @@ export default {
 				})
 				.then(
 					({ data }) => {
-						this.error = ''
 						this.info = data.message
 						this.loading = false
 					},
 					error => {
 						this.info = ''
-						this.error = error.response ? error.response.data.message : error.message
+						this.$swal.fire({
+							icon: 'error',
+							title: handleErrors(error, 'resetPassword'),
+							timer: 6000,
+						})
 						this.loading = false
 					}
 				)

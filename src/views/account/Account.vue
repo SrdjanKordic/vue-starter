@@ -8,6 +8,7 @@
 		/>
 
 		<div class="row p-0">
+			<!-- Account navigation -->
 			<div class="col-xl-3 col-lg-4 col-md-4 order-1 order-md-0">
 				<ul class="nav nav-pills mb-2 flex-column nav-left">
 					<li class="nav-item">
@@ -62,9 +63,12 @@
 					</li>
 				</ul>
 			</div>
+			<!-- #Account navigation -->
+			<!-- Account pages -->
 			<div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
 				<router-view></router-view>
 			</div>
+			<!-- #Account pages -->
 		</div>
 	</div>
 </template>
@@ -72,23 +76,11 @@
 <script>
 //import restApi from "../api/index.js";
 import PageHeader from '@/components/layout/PageHeader'
-import { mapState } from 'vuex'
 export default {
 	name: 'Account',
 	components: { PageHeader },
 	data() {
-		return {
-			user: {},
-			loading: false,
-		}
-	},
-	computed: {
-		...mapState(['authUser']),
-	},
-	created() {},
-	updated() {},
-	methods: {
-		getUser() {},
+		return {}
 	},
 }
 </script>

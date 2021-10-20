@@ -17,6 +17,7 @@
 <script>
 import restApi from '../../../api'
 import { mapState } from 'vuex'
+import { handleErrors } from '../../../actions/helpers'
 export default {
 	name: 'Overview',
 	data() {
@@ -41,7 +42,11 @@ export default {
 					this.user = data
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 					this.loading = false
 				})
 		},
