@@ -1,3 +1,8 @@
+import restAPI from '../api'
+import store from '../store'
+import { Device } from '@capacitor/device'
+import ip from 'ip'
+
 const handleErrors = (error, type) => {
 	console.log(error.response.data)
 	let errorMsg = handleValidationErrors(error, type)
@@ -54,4 +59,29 @@ const handleValidationErrors = (error, type) => {
 	return errorMessage
 }
 
-export { handleErrors }
+const logActivity = async (type, operation, description, subjectType, subjectId, properties) => {
+	let deviceInfo = await logDeviceInfo()
+
+	let logInfo = {
+		type,
+		operation,
+		description,
+		subject_type: subjectType,
+		subject_id: subjectId,
+		properties: JSON.stringify(properties),
+		user_agent: navigator.userAgent,
+		user_id: store.state.account.id,
+		user_ip: ip.address(),
+		user_os: deviceInfo.operatingSystem,
+		user_os_version: deviceInfo.osVersion,
+		user_platform: deviceInfo.platform,
+	}
+
+	restAPI.post('/log', logInfo)
+}
+
+const logDeviceInfo = async () => {
+	return await Device.getInfo()
+}
+
+export { handleErrors, logActivity }

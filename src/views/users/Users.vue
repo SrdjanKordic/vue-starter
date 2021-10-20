@@ -190,9 +190,8 @@ export default {
 		},
 		// Create new user
 		createUser() {
-			console.log('ovde')
 			restApi
-				.post(`/register`, this.newUser)
+				.post(`/user`, this.newUser)
 				.then(() => {
 					this.$swal.fire({
 						icon: 'success',

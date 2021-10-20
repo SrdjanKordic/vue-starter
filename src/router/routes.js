@@ -8,6 +8,7 @@ import Account from '../views/account/Account.vue'
 import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
 import SettingsParent from '../views/settings/SettingsParent.vue'
+import Logs from '../views/Logs.vue'
 
 import middleware from './middleware'
 
@@ -143,5 +144,9 @@ export default [
 				name: 'settingsRoles',
 			},
 		],
+	},
+	{
+		path: '/logs',
+		component: Logs,
 	},
 ]

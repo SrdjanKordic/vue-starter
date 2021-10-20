@@ -80,7 +80,7 @@
 <script>
 import restApi from '../../../api'
 import { mapState } from 'vuex'
-import { handleErrors } from '../../../actions/helpers'
+import { handleErrors, logActivity } from '../../../actions/helpers'
 export default {
 	name: 'Information',
 	props: ['person'],
@@ -118,6 +118,7 @@ export default {
 				.put('user/' + this.$route.params.id, data)
 				.then(({ data }) => {
 					this.user = data
+					logActivity('default', 'update', 'User data updated', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User successfully updated!',
