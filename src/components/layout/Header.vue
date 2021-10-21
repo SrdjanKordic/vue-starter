@@ -47,7 +47,6 @@ export default {
 	methods: {
 		async logout() {
 			this.loading = true
-			console.log('tuje')
 			try {
 				await this.$store.dispatch('authLogout', this.token)
 				await this.$router.push({ name: 'login' })

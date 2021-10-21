@@ -160,7 +160,6 @@ export default {
 			restApi
 				.get(`/logs`)
 				.then(({ data }) => {
-					console.log(data)
 					this.logs = data
 					this.loading = false
 				})

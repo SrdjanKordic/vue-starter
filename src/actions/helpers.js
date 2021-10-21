@@ -4,7 +4,6 @@ import { Device } from '@capacitor/device'
 import ip from 'ip'
 
 const handleErrors = (error, type) => {
-	console.log(error.response.data)
 	let errorMsg = handleValidationErrors(error, type)
 	if (errorMsg != '') {
 		return errorMsg

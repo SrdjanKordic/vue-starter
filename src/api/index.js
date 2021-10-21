@@ -58,7 +58,6 @@ restAPI.interceptors.response.use(
 						})
 				}
 			} else {
-				console.log(data.message)
 				store.dispatch('authLogout')
 			}
 		}

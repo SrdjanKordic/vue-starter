@@ -169,7 +169,11 @@ export default {
 					this.loading = false
 				})
 				.catch(error => {
-					console.log(error)
+					this.$swal.fire({
+						icon: 'error',
+						title: handleErrors(error, ''),
+						timer: 6000,
+					})
 					this.loading = false
 				})
 		},
@@ -235,7 +239,6 @@ export default {
 			restApi
 				.get('/permissions')
 				.then(({ data }) => {
-					console.log(data)
 					this.optionsPermissions = data
 				})
 				.catch(error => {

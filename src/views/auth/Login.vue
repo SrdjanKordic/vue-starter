@@ -89,6 +89,7 @@ export default {
 				console.log(e.origin)
 			}
 
+			// TODO: Need bether way for this catching message for social login, bether url from config
 			if (e.origin === 'http://127.0.0.1:8000') {
 				this.$store.commit('SET_AUTH', e.data.token)
 				window.removeEventListener('message', this.onMessage)
