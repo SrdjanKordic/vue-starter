@@ -45,7 +45,7 @@
 					</router-link>
 				</li>
 				<li class="mb-2" v-if="isAuth">
-					<router-link class="btn text-start px-3" to="/history">
+					<router-link class="btn text-start px-3" to="/logs">
 						<font-awesome-icon :icon="['fas', 'history']" class="me-1" /> Logs
 					</router-link>
 				</li>
