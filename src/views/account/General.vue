@@ -39,7 +39,7 @@
 import restApi from '../../api'
 import { mapState } from 'vuex'
 import Avatar from '@/components/user/Avatar'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'General',
 	components: {
@@ -70,8 +70,14 @@ export default {
 			restApi
 				.post('/user/avatar', form, config)
 				.then(({ data }) => {
+					logActivity('default', 'update', 'User avatar updated', 'User', this.account.id, data)
 					this.account.avatar = data
 					this.avatar = data
+					this.$swal.fire({
+						icon: 'success',
+						title: 'Avatar successfully updated',
+						timer: 4000,
+					})
 				})
 				.catch(error => {
 					this.$swal.fire({

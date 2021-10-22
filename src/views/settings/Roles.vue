@@ -133,7 +133,7 @@ import Multiselect from 'vue-multiselect'
 import { mapState } from 'vuex'
 import restApi from '../../api'
 import { Modal } from 'bootstrap'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'Roles',
 	components: { Multiselect },
@@ -193,9 +193,10 @@ export default {
 			let permissions = this.selectedPermissions.toString()
 			restApi
 				.put('/role/' + this.role.id, { ...this.role, perms: permissions })
-				.then(() => {
+				.then(({ data }) => {
 					this.loadRoles()
 					this.$roleModal.hide()
+					logActivity('default', 'update', 'Role updated', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'Role successfully updated',
@@ -213,9 +214,10 @@ export default {
 			let permissions = this.selectedPermissions.toString()
 			restApi
 				.post('/role/', { ...this.role, perms: permissions })
-				.then(() => {
+				.then(({ data }) => {
 					this.loadRoles()
 					this.$roleModal.hide()
+					logActivity('default', 'create', 'Role created', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'Role successfully added',

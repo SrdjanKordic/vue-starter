@@ -55,7 +55,7 @@
 
 <script>
 import restApi from '../../api'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'ChangePassword',
 	data() {
@@ -78,6 +78,7 @@ export default {
 				.post('/user/change-password', data)
 				.then(() => {
 					this.loading = false
+					logActivity('default', 'update', 'User password updated', 'User', null, null)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'Password successfully changed!',

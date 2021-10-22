@@ -148,7 +148,7 @@ import { mapState } from 'vuex'
 import restApi from '../../api/index.js'
 import { Modal } from 'bootstrap'
 import Avatar from '@/components/user/Avatar'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'Users',
 	components: { PageHeader, Avatar },
@@ -192,12 +192,13 @@ export default {
 		createUser() {
 			restApi
 				.post(`/user`, this.newUser)
-				.then(() => {
+				.then(({ data }) => {
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User created successfully!',
 						timer: 4000,
 					})
+					logActivity('default', 'create', 'User created', 'User', data.id, data)
 					this.newUser = {}
 					this.getUsers()
 					this.$createUserModal.hide()

@@ -45,7 +45,7 @@
 <script>
 //import restApi from "../api/index.js";
 import { mapState } from 'vuex'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'Social',
 	data() {
@@ -73,6 +73,7 @@ export default {
 				.dispatch('accountUpdate', data)
 				.then(() => {
 					this.loading = false
+					logActivity('default', 'update', 'User social info updated', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User successfully updated',

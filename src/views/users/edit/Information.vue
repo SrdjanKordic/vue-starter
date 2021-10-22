@@ -118,7 +118,7 @@ export default {
 				.put('user/' + this.$route.params.id, data)
 				.then(({ data }) => {
 					this.user = data
-					logActivity('default', 'update', 'User data updated', 'User', data.id, data)
+					logActivity('default', 'update', 'User informations updated', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User successfully updated!',

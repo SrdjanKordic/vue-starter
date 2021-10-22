@@ -58,7 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { handleErrors } from '../../actions/helpers'
+import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'Information',
 	data() {
@@ -86,6 +86,7 @@ export default {
 				.dispatch('accountUpdate', data)
 				.then(() => {
 					this.loading = false
+					logActivity('default', 'update', 'User informations updated', 'User', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'User successfully updated',
