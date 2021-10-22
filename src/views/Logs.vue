@@ -74,7 +74,7 @@
 			aria-labelledby="lofInfoLabel"
 			aria-hidden="true"
 		>
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Log</h5>
@@ -83,31 +83,15 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<table class="table table-hover">
-								<tbody>
-									<template v-for="(prop, index) in logInfo">
-										<tr :key="index" v-if="index !== 'properties' && index !== 'updated_at'">
-											<td>
-												<b class="text-muted">{{ index }}</b>
-											</td>
-											<td class="word-wrap">{{ prop }}</td>
-										</tr>
-									</template>
-								</tbody>
-							</table>
-
-							<div class="col-12 mb-2">
-								<h5>Properties</h5>
-							</div>
-							<div class="col-12 mb-2 flex-wrap" v-if="logInfo.properties">
+							<div class="col-12">
 								<table class="table table-hover">
 									<tbody>
-										<template v-for="(prop, index) in JSON.parse(logInfo.properties)">
-											<tr :key="index">
+										<template v-for="(prop, index) in logInfo">
+											<tr :key="index" v-if="index !== 'updated_at'">
 												<td>
 													<b class="text-muted">{{ index }}</b>
 												</td>
-												<td>{{ prop }}</td>
+												<td class="text-break">{{ prop }}</td>
 											</tr>
 										</template>
 									</tbody>
