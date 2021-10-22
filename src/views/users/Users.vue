@@ -61,6 +61,7 @@
 								<span class="visually-hidden">Loading...</span>
 							</div>
 						</div>
+						<LPDataTable :data="users" :columns="tableColumns" :options="tableOptions" />
 					</div>
 					<div v-else class="card-body">
 						<div class="alert alert-danger" role="alert">
@@ -143,6 +144,7 @@
 </template>
 
 <script>
+import LPDataTable from '@/components/LPDataTable'
 import PageHeader from '@/components/layout/PageHeader'
 import { mapState } from 'vuex'
 import restApi from '../../api/index.js'
@@ -151,7 +153,7 @@ import Avatar from '@/components/user/Avatar'
 import { handleErrors, logActivity } from '../../actions/helpers'
 export default {
 	name: 'Users',
-	components: { PageHeader, Avatar },
+	components: { PageHeader, Avatar, LPDataTable },
 	data() {
 		return {
 			users: [],
@@ -159,6 +161,12 @@ export default {
 			error: '',
 			newUser: {},
 			$createUserModal: null,
+			tableColumns: [
+				{ title: 'Name', field: 'name' },
+				{ title: 'Phone', field: 'phone' },
+				{ title: 'Role', field: 'role.name' },
+			],
+			tableOptions: {},
 		}
 	},
 	computed: {

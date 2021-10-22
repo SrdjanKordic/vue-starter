@@ -6,6 +6,10 @@ import VueSweetalert2 from 'vue-sweetalert2'
 
 import 'bootstrap'
 
+import VueTabulator from 'vue-tabulator'
+
+Vue.use(VueTabulator)
+
 Vue.use(VueSweetalert2, {
 	toast: true,
 	position: 'top-end',
