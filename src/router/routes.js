@@ -9,6 +9,7 @@ import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
 import SettingsParent from '../views/settings/SettingsParent.vue'
 import Logs from '../views/Logs.vue'
+import store from '../store/index'
 
 import middleware from './middleware'
 
@@ -148,5 +149,17 @@ export default [
 	{
 		path: '/logs',
 		component: Logs,
+		name: 'logs',
+		beforeEnter: (to, from, next) => {
+			if (store.getters['isAuth']) {
+				if (store.state.authUser.permissions.includes('LOGS_ACCESS')) {
+					next()
+				} else {
+					next({ name: 'home' })
+				}
+			} else {
+				next({ name: 'login' })
+			}
+		},
 	},
 ]
