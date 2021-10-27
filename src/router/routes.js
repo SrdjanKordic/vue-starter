@@ -9,7 +9,6 @@ import ForgotPassword from '../views/auth/ForgotPassword.vue'
 import ResetPassword from '../views/auth/ResetPassword.vue'
 import SettingsParent from '../views/settings/SettingsParent.vue'
 import Logs from '../views/Logs.vue'
-import store from '../store/index'
 
 import middleware from './middleware'
 
@@ -42,6 +41,7 @@ export default [
 		path: '/',
 		name: 'home',
 		component: Home,
+		props: { permission: '' },
 		beforeEnter: middleware.user,
 	},
 	{
@@ -56,36 +56,35 @@ export default [
 		path: '/users',
 		name: 'users',
 		component: Users,
+		props: { permission: 'USER_ACCESS' },
 		beforeEnter: middleware.user,
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackChunkName: "account" */ '../views/users/Users.vue'),
+				component: () => import('../views/users/Users.vue'),
 			},
 			{
 				path: ':id',
-				component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/EditParent.vue'),
+				component: () => import('../views/users/edit/EditParent.vue'),
 				children: [
 					{
 						path: '',
-						component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Overview.vue'),
+						component: () => import('../views/users/edit/Overview.vue'),
 						name: 'userOverview',
 					},
 					{
 						path: 'information',
-						component: () =>
-							import(/* webpackChunkName: "account" */ '../views/users/edit/Information.vue'),
+						component: () => import('../views/users/edit/Information.vue'),
 						name: 'userInformation',
 					},
 					{
 						path: 'timeline',
-						component: () => import(/* webpackChunkName: "account" */ '../views/users/edit/Timeline.vue'),
+						component: () => import('../views/users/edit/Timeline.vue'),
 						name: 'userTimeline',
 					},
 					{
 						path: 'permissions',
-						component: () =>
-							import(/* webpackChunkName: "account" */ '../views/users/edit/Permissions.vue'),
+						component: () => import('../views/users/edit/Permissions.vue'),
 						name: 'userPermissions',
 					},
 				],
@@ -96,6 +95,7 @@ export default [
 		path: '/account',
 		name: 'account',
 		component: Account,
+		props: { permission: '' },
 		meta: {
 			title: 'Your account',
 			backTo: '/',
@@ -104,27 +104,27 @@ export default [
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/General.vue'),
+				component: () => import('../views/account/General.vue'),
 				name: 'accountGeneral',
 			},
 			{
 				path: 'password',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/ChangePassword.vue'),
+				component: () => import('../views/account/ChangePassword.vue'),
 				name: 'accountPassword',
 			},
 			{
 				path: 'information',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Information.vue'),
+				component: () => import('../views/account/Information.vue'),
 				name: 'accountInformation',
 			},
 			{
 				path: 'social',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Social.vue'),
+				component: () => import('../views/account/Social.vue'),
 				name: 'accountSocial',
 			},
 			{
 				path: 'notifications',
-				component: () => import(/* webpackChunkName: "account" */ '../views/account/Notifications.vue'),
+				component: () => import('../views/account/Notifications.vue'),
 				name: 'accountNotifications',
 			},
 		],
@@ -132,16 +132,17 @@ export default [
 	{
 		path: '/settings',
 		component: SettingsParent,
+		props: { permission: 'SETTINGS_GENERAL_ACCESS' },
 		beforeEnter: middleware.user,
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackChunkName: "account" */ '../views/settings/General.vue'),
+				component: () => import('../views/settings/General.vue'),
 				name: 'settingsGeneral',
 			},
 			{
 				path: 'roles',
-				component: () => import(/* webpackChunkName: "account" */ '../views/settings/Roles.vue'),
+				component: () => import('../views/settings/Roles.vue'),
 				name: 'settingsRoles',
 			},
 		],
@@ -150,16 +151,7 @@ export default [
 		path: '/logs',
 		component: Logs,
 		name: 'logs',
-		beforeEnter: (to, from, next) => {
-			if (store.getters['isAuth']) {
-				if (store.state.authUser.permissions.includes('LOGS_ACCESS')) {
-					next()
-				} else {
-					next({ name: 'home' })
-				}
-			} else {
-				next({ name: 'login' })
-			}
-		},
+		props: { permission: 'LOGS_ACCESS' },
+		beforeEnter: middleware.user,
 	},
 ]

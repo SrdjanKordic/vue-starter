@@ -1,7 +1,7 @@
-import guest from './rules/guest'
 import user from './rules/user'
+import guest from './rules/guest'
 
 export default {
-  guest,
-  user,
+	guest,
+	user,
 }
