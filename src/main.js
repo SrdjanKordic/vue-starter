@@ -20,6 +20,8 @@ Vue.use(VueSweetalert2, {
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+	faArrowCircleDown,
+	faArrowCircleUp,
 	faBars,
 	faBox,
 	faClock,
@@ -55,7 +57,9 @@ library.add(
 	faUserEdit,
 	faEdit,
 	faUserPlus,
-	faHistory
+	faHistory,
+	faArrowCircleDown,
+	faArrowCircleUp
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
