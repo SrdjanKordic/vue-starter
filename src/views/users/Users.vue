@@ -241,7 +241,7 @@ export default {
 		getUsers() {
 			this.loading = true
 			restApi
-				.get('/users', { params: { page: this.page } })
+				.get('/users', { params: { page: this.page, search: 'Kordic' } })
 				.then(({ data }) => {
 					this.users = data.data
 					this.pagination = data
