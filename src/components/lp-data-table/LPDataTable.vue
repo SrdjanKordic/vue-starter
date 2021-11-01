@@ -53,7 +53,6 @@ export default {
 	created() {},
 	methods: {
 		getDataValue(dataValue, value) {
-			console.log(value)
 			if (value !== null) {
 				if (value.includes('.')) {
 					let values = value.split('.')

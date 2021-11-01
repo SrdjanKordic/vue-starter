@@ -259,7 +259,6 @@ export default {
 				delete this.params[filter.name]
 			}
 		})
-		console.log(this.params)
 		this.getUsers()
 	},
 	mounted() {
@@ -277,8 +276,6 @@ export default {
 				direction: this.direction,
 			}
 
-			console.log(this.params)
-
 			restApi
 				.get('/users', { params: this.params })
 				.then(({ data }) => {
@@ -289,7 +286,6 @@ export default {
 					this.$router.replace({ query: this.params })
 				})
 				.catch(error => {
-					console.log(error)
 					this.$swal.fire({
 						icon: 'error',
 						title: handleErrors(error, ''),

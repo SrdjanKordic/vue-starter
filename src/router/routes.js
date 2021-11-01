@@ -54,13 +54,14 @@ export default [
 	},
 	{
 		path: '/users',
-		name: 'users',
+
 		component: Users,
 		props: { permission: 'USER_ACCESS' },
 		beforeEnter: middleware.user,
 		children: [
 			{
 				path: '',
+				name: 'users',
 				component: () => import('../views/users/Users.vue'),
 			},
 			{
@@ -93,7 +94,6 @@ export default [
 	},
 	{
 		path: '/account',
-		name: 'account',
 		component: Account,
 		props: { permission: '' },
 		meta: {
@@ -104,8 +104,8 @@ export default [
 		children: [
 			{
 				path: '',
+				name: 'account',
 				component: () => import('../views/account/General.vue'),
-				name: 'accountGeneral',
 			},
 			{
 				path: 'password',

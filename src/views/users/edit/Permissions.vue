@@ -144,6 +144,22 @@
 							<td></td>
 							<td></td>
 						</tr>
+						<tr role="row" class="">
+							<td class="">Logs</td>
+							<td>
+								<div class="form-check form-switch">
+									<input
+										:disabled="!useCustomPermissions"
+										class="form-check-input"
+										v-model="permissions.LOGS_ACCESS"
+										type="checkbox"
+									/>
+								</div>
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
