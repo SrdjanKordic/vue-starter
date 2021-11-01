@@ -17,7 +17,7 @@
 						<label for="">{{ filter.label }}</label>
 						<select class="form-select" @change="setFilter()" v-model="filter.value">
 							<option value="">{{ filter.placeholder }}</option>
-							<template v-for="(option, index) in getDataForOptions(filter.optionsEndpoint)">
+							<template v-for="(option, index) in filter.options">
 								<option :key="index" :value="option.id">{{ option.name }}</option>
 							</template>
 						</select>
@@ -36,16 +36,22 @@ export default {
 	data() {
 		return {}
 	},
-	created() {},
+	mounted() {
+		this.getOptionsDataForFilters()
+	},
 	methods: {
 		setFilter() {
 			this.$emit('getFilters', { filters: this.filters })
 		},
 
-		// Load Roles
-		getDataForOptions(optionsEndpoint) {
-			restApi.get(optionsEndpoint).then(({ data }) => {
-				console.log(data)
+		// Load options for filters
+		getOptionsDataForFilters() {
+			this.filters.forEach(filter => {
+				if (filter.optionsEndpoint && filter.optionsEndpoint !== '') {
+					restApi.get(filter.optionsEndpoint).then(({ data }) => {
+						filter.options = data
+					})
+				}
 			})
 		},
 	},

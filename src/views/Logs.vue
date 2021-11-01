@@ -39,10 +39,10 @@
 										</td>
 										<td>{{ log.subject_type }} ({{ log.subject_id }})</td>
 										<td class="align-middle">
-											{{ log.user_id }}
+											{{ log.user.name }}
 										</td>
 										<td class="align-middle">
-											{{ log.user_ip }}
+											{{ log.causer_ip }}
 										</td>
 										<td class="align-middle">
 											{{

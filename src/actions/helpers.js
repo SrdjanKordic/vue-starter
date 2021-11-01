@@ -61,6 +61,8 @@ const handleValidationErrors = (error, type) => {
 const logActivity = async (type, operation, description, subjectType, subjectId, properties) => {
 	let deviceInfo = await logDeviceInfo()
 
+	console.log(store.state)
+
 	let logInfo = {
 		type,
 		operation,
@@ -68,7 +70,7 @@ const logActivity = async (type, operation, description, subjectType, subjectId,
 		subject_type: subjectType,
 		subject_id: subjectId,
 		causer_type: 'User',
-		causer_id: store.state.account.id,
+		causer_id: store.state.authUser.id,
 		causer_agent: navigator.userAgent,
 		causer_ip: ip.address(),
 		causer_os: deviceInfo.operatingSystem,
