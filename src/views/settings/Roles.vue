@@ -196,7 +196,7 @@ export default {
 				.then(({ data }) => {
 					this.loadRoles()
 					this.$roleModal.hide()
-					logActivity('default', 'update', 'Role updated', 'User', data.id, data)
+					logActivity('default', 'update', 'Role updated', 'Role', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'Role successfully updated',
@@ -217,7 +217,7 @@ export default {
 				.then(({ data }) => {
 					this.loadRoles()
 					this.$roleModal.hide()
-					logActivity('default', 'create', 'Role created', 'User', data.id, data)
+					logActivity('default', 'create', 'Role created', 'Role', data.id, data)
 					this.$swal.fire({
 						icon: 'success',
 						title: 'Role successfully added',
