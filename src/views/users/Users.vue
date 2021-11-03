@@ -340,6 +340,7 @@ export default {
 
 		// Get items from page that returned from LPDataTablePagination
 		getItems(page) {
+			console.log(page)
 			this.page = page
 			this.getUsers()
 		},

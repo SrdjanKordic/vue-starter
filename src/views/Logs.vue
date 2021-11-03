@@ -10,16 +10,49 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="card">
-					<div class="card-body">
-						<table v-if="!loading" class="table table-hover">
+					<div v-if="!error" class="card-body">
+						<table :class="!loading ? 'table table-hover' : 'table table-hover loading'">
 							<thead>
 								<tr class="rounded">
+									<th>
+										<span role="button" @click="setOrderBy('id')">
+											ID
+											<span v-if="orderBy === 'id'">
+												<font-awesome-icon
+													v-if="direction === 'asc'"
+													:icon="['fas', 'arrow-circle-up']"
+													class="me-1"
+												/>
+												<font-awesome-icon
+													v-if="direction === 'desc'"
+													:icon="['fas', 'arrow-circle-down']"
+													class="me-1"
+												/>
+											</span>
+										</span>
+									</th>
 									<th>Operation</th>
 									<th>Description</th>
 									<th>Subject</th>
 									<th>User</th>
 									<th>IP</th>
-									<th>Date</th>
+									<th>
+										<span role="button" @click="setOrderBy('created_at')">
+											DATE
+											<span v-if="orderBy === 'created_at'">
+												<font-awesome-icon
+													v-if="direction === 'asc'"
+													:icon="['fas', 'arrow-circle-up']"
+													class="me-1"
+												/>
+												<font-awesome-icon
+													v-if="direction === 'desc'"
+													:icon="['fas', 'arrow-circle-down']"
+													class="me-1"
+												/>
+											</span>
+										</span>
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -31,6 +64,7 @@
 										data-bs-target="#logInfo"
 										role="button"
 									>
+										<td width="80">{{ log.id }}</td>
 										<td class="align-middle">
 											{{ log.operation }}
 										</td>
@@ -55,10 +89,11 @@
 								</template>
 							</tbody>
 						</table>
-						<div v-else class="text-center">
-							<div class="spinner-border" role="status">
-								<span class="visually-hidden">Loading...</span>
-							</div>
+						<LPDataTablePagination :pagination="pagination" v-on:getItems="getItems($event.page)" />
+					</div>
+					<div v-else class="card-body">
+						<div class="alert alert-danger" role="alert">
+							{{ error }}
 						</div>
 					</div>
 				</div>
@@ -116,15 +151,22 @@ import restApi from '../api/index.js'
 import { handleErrors } from '../actions/helpers'
 import { formatDistance } from 'date-fns'
 import { Modal } from 'bootstrap'
+import LPDataTablePagination from '@/components/lp-data-table/LPDataTablePagination'
 export default {
 	name: 'Logs',
-	components: { PageHeader },
+	components: { PageHeader, LPDataTablePagination },
 	data() {
 		return {
+			error: '',
 			logs: [],
 			loading: false,
 			$logInfoModal: null,
 			logInfo: {},
+			page: this.$route.query.page || 1,
+			orderBy: this.$route.query.orderBy || 'created_at',
+			direction: this.$route.query.direction || 'desc',
+			pagination: {},
+			params: {},
 		}
 	},
 	computed: {
@@ -141,11 +183,22 @@ export default {
 		// Get all logs from DB
 		getLogs() {
 			this.loading = true
+
+			this.params = {
+				...this.params,
+				page: this.page,
+				orderBy: this.orderBy,
+				direction: this.direction,
+			}
+
 			restApi
-				.get(`/logs`)
+				.get(`/logs`, { params: this.params })
 				.then(({ data }) => {
-					this.logs = data
+					this.logs = data.data
+					this.pagination = data
+					delete this.pagination.data
 					this.loading = false
+					this.$router.replace({ query: this.params })
 				})
 				.catch(error => {
 					this.$swal.fire({
@@ -157,6 +210,22 @@ export default {
 		},
 		setLogInfo(log) {
 			this.logInfo = log
+		},
+		// Get items from page that returned from LPDataTablePagination
+		getItems(page) {
+			this.page = page
+			this.getLogs()
+		},
+		// Set direction
+		setOrderBy(column) {
+			if (this.orderBy === column && this.direction === 'asc') {
+				this.direction = 'desc'
+			} else {
+				this.orderBy = column
+				this.direction = 'asc'
+			}
+
+			this.getLogs()
 		},
 	},
 }

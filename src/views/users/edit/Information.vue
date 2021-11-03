@@ -2,12 +2,12 @@
 	<div class="card fade show">
 		<div class="card-header">
 			<h4 class="mb-0">
-				Informations
+				Information
 				<div v-if="loading" class="spinner-border spinner-border-sm text-primary" role="status">
 					<span class="visually-hidden">Loading...</span>
 				</div>
 			</h4>
-			<small>Your informations, let other to know more about you</small>
+			<small>Your information, let other to know more about you</small>
 		</div>
 		<div class="card-body">
 			<form v-if="user" @submit.prevent="updateUser">

@@ -1,8 +1,8 @@
 <template>
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0">Informations</h4>
-			<small>Your informations, let other to know more about you</small>
+			<h4 class="mb-0">Information</h4>
+			<small>Your information, let other to know more about you</small>
 		</div>
 		<div class="card-body">
 			<form v-if="account" @submit.prevent="update">

@@ -14,7 +14,7 @@
 					<li class="nav-item">
 						<router-link
 							class="nav-link"
-							:class="this.$route.name === 'accountGeneral' ? 'active' : ''"
+							:class="this.$route.name === 'account' ? 'active' : ''"
 							aria-current="page"
 							to="/account"
 						>
